@@ -1,0 +1,33 @@
+# Local PostgreSQL for structured portfolio data (see server/db/README.md).
+# Usage, from the repository root:
+#   cp .env.example .env        # then set POSTGRES_PASSWORD
+#   docker compose up -d        # start
+#   docker compose ps           # STATUS shows "healthy" once pg_isready passes
+#   docker compose down         # stop (data is kept in the named volume)
+#   docker compose down -v      # stop and DELETE all database data
+
+name: ai-portfolio-command-centre
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-portfolio}
+      POSTGRES_USER: ${POSTGRES_USER:-portfolio}
+      # Required, never hardcoded: compose refuses to start without it.
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in the root .env (see .env.example)}
+    ports:
+      # Bound to localhost only: the database is not reachable from other machines.
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - portfolio_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+volumes:
+  portfolio_pgdata:

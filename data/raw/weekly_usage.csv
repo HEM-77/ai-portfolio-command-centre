@@ -1,0 +1,64 @@
+initiative_id,week_ending,metric_name,value,unit
+NMB-001,2026-11-01,Licensed Users,2000,users
+nmb-001 ,2026-11-01,Weekly Active Users,1150,users
+NMB-001,2026-11-08,Licensed Users,2000,users
+NMB-001,2026-11-08,Weekly Active Users,1210,users
+NMB-001,2026-11-15,Licensed Users,2000,users
+NMB-001,2026-11-15,Weekly Active Users,1260,users
+NMB-002,01-Nov-2026,licences,5000,users
+NMB-002,01-Nov-2026,WAU,3300,users
+NMB-002,08-Nov-2026,licences,5000,users
+NMB-002,08-Nov-2026,WAU,3150,users
+NMB-002,15-Nov-2026,licences,5000,users
+NMB-002,15-Nov-2026,WAU,3000,users
+NMB-003,"Nov 1, 2026",Seats,150,users
+NMB-003,"Nov 1, 2026",active_users_wk,110,users
+NMB-003,"Nov 8, 2026",Seats,150,users
+NMB-003,"Nov 8, 2026",active_users_wk,125,users
+NMB-003,"Nov 15, 2026",Seats,150,users
+NMB-003,"Nov 15, 2026",active_users_wk,135,users
+NMB-004,2026-11-01,licensed_users,400,users
+NMB-004,2026-11-01,Weekly Active Users,100,users
+NMB-004,2026-11-08,licensed_users,400,users
+NMB-004,2026-11-08,Weekly Active Users,120,users
+NMB-004,2026-11-08,Weekly Active Users,120,users
+NMB-004,2026-11-15,licensed_users,400,users
+NMB-004,2026-11-15,Weekly Active Users,140,users
+NMB-005,01-Nov-2026,Licensed Users,300,users
+nmb-005 ,01-Nov-2026,WAU,190,users
+NMB-005,08-Nov-2026,Licensed Users,300,users
+NMB-005,08-Nov-2026,WAU,192,users
+NMB-005,15-Nov-2026,Licensed Users,300,users
+NMB-005,15-Nov-2026,WAU,195,users
+NMB-006,"Nov 1, 2026",licences,1200,users
+NMB-006,"Nov 1, 2026",active_users_wk,330,users
+NMB-006,"Nov 8, 2026",licences,1200,users
+nmb-006 ,"Nov 8, 2026",active_users_wk,310,users
+NMB-006,"Nov 15, 2026",licences,,users
+NMB-006,"Nov 15, 2026",active_users_wk,300,users
+NMB-007,2026-11-01,Seats,250,users
+NMB-007,2026-11-01,Weekly Active Users,60,users
+NMB-007,2026-11-08,Seats,250,users
+NMB-007,2026-11-08,Weekly Active Users,,users
+NMB-007,2026-11-15,Seats,250,users
+NMB-007,2026-11-15,Weekly Active Users,75,users
+NMB-008,01-Nov-2026,licensed_users,800,users
+NMB-008,01-Nov-2026,Weekly Adoption Rate,85.0,%
+NMB008,08-Nov-2026,licensed_users,800,users
+NMB-008,08-Nov-2026,Weekly Adoption Rate,80.0,%
+NMB-008,15-Nov-2026,licensed_users,800,users
+NMB-008,15-Nov-2026,Weekly Adoption Rate,75.0,%
+nmb-009 ,"Nov 1, 2026",Licensed Users,350,users
+NMB-009,"Nov 1, 2026",active_users_wk,250,users
+NMB-009,"Nov 8, 2026",Licensed Users,350,users
+NMB-009,"Nov 8, 2026",active_users_wk,262,users
+NMB-009,"Nov 15, 2026",Licensed Users,350,users
+NMB-009,"Nov 15, 2026",active_users_wk,2800,users
+NMB010,2026-11-01,licences,900,users
+NMB-010,2026-11-01,Weekly Active Users,250,users
+NMB-010,2026-11-08,licences,900,users
+NMB-010,2026-11-08,Weekly Active Users,290,users
+NMB-010,2026-11-15,licences,900,users
+NMB010,2026-11-15,Weekly Active Users,315,users
+NMB-099,2026-11-15,WAU,55,users
+NMB-099,2026-11-15,Licensed Users,100,users

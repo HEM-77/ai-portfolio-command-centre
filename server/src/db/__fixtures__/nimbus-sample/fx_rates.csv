@@ -1,0 +1,4 @@
+currency,rate_to_usd,note
+USD,1.0,Base reporting currency
+EUR,1.08,"Fixed rate, test fixture only"
+USD thousands,1000.0,"Multiply by 1,000 to get USD"

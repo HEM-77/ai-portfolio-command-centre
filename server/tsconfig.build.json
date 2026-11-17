@@ -1,0 +1,6 @@
+{
+  // Production build: same settings as tsconfig.json, without tests and test helpers.
+  // `npm run typecheck` still uses tsconfig.json, so tests are type-checked too.
+  "extends": "./tsconfig.json",
+  "exclude": ["node_modules", "dist", "src/**/*.test.ts", "src/testing/**", "src/**/__fixtures__/**"]
+}

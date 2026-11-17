@@ -13,9 +13,9 @@ This is the **single source of truth** for the interfaces between modules and be
 |---|---|
 | Base URL | Server runs on `http://localhost:3001`. All routes are under `/api`. |
 | Format | JSON only, UTF-8, `camelCase` field names. |
-| IDs | Initiative IDs look like `INIT-001`. Citation IDs look like `C1`, `C2`, … and are unique within one response. |
+| IDs | Initiative IDs are the official Nimbus IDs `NMB-001` … `NMB-010` (§5.1). Citation IDs look like `C1`, `C2`, … and are unique within one response. JSON examples in §3 that show `INIT-xxx` IDs and values are illustrative shapes only. |
 | Dates | ISO 8601. Date only: `2026-11-14`. Timestamp: `2026-11-17T09:30:00Z`. |
-| Money | Plain numbers in one portfolio currency. No currency symbols. Currency is an [open decision](#8-open-decisions). |
+| Money | Plain numbers in **USD**, converted with the dataset's `fx_rates.csv` (§5.3). No currency symbols. |
 | Ratios | Decimals, not percentages: `0.42` means 42 %. `-0.26` means −26 % ROI. The client formats them for display. |
 | Missing values | `null`. Never `0`, `""` or `"N/A"` to mean "unknown". |
 
@@ -56,21 +56,21 @@ Every endpoint returns one of these two shapes.
 These are the TypeScript shapes behind the JSON. **PROPOSED** location: `server/src/types/contracts.ts` (owned by Hem). The client keeps a matching copy in `client/src/types/api.ts` (owned by Seren).
 
 ```ts
-type InitiativeStage = "discovery" | "pilot" | "scaling" | "production" | "paused";
+type InitiativeType = "Copilot" | "Conversational Bot" | "Predictive Model" | "AI-enabled Automation"; // verbatim initiative_type
 type InitiativeStatus = "on_track" | "at_risk" | "off_track";
 
 /** One row of the portfolio scorecard. All numbers are calculated by the Portfolio module. */
 interface InitiativeMetrics {
-  initiativeId: string;          // "INIT-001"
+  initiativeId: string;          // "NMB-001"
   name: string;
   businessUnit: string;
-  owner: string;
-  stage: InitiativeStage;
-  status: InitiativeStatus;      // derived by rule, see §8
+  owner: string | null;          // no dataset column (§8 #13): null until sourced from the charter Delivery lead
+  initiativeType: InitiativeType; // initiatives.csv initiative_type (replaced `stage`, §8 #13)
+  status: InitiativeStatus;      // derived by rule, see §5.4
   spendToDate: number;
   valueRealised: number;
   roi: number | null;            // (valueRealised - spendToDate) / spendToDate; null if spend is 0
-  adoptionRate: number | null;   // activeUsers / targetUsers
+  adoptionRate: number | null;   // weekly active users / licensed users, latest week
   paybackMonths: number | null;  // null if not yet paying back
   dataQualityIssueCount: number;
   asOf: string;                  // date of the latest data point
@@ -216,7 +216,9 @@ Optional query parameters (all PROPOSED):
 | `status` | `off_track` | Filter by status |
 | `businessUnit` | `Operations` | Filter by business unit |
 | `sort` | `roi` | Sort field; default `initiativeId` |
-| `order` | `asc` | `asc` or `desc` |
+| `order` | `asc` | `asc` or `desc`; default `asc` |
+
+The controller validates these and passes them to `PortfolioService.getInitiatives()`, which does the filtering and sorting (§4). `null` values sort last in both orders.
 
 ```json
 {
@@ -228,8 +230,8 @@ Optional query parameters (all PROPOSED):
         "initiativeId": "INIT-003",
         "name": "Claims Triage Assistant",
         "businessUnit": "Operations",
-        "owner": "Head of Claims",
-        "stage": "pilot",
+        "owner": null,
+        "initiativeType": "Copilot",
         "status": "off_track",
         "spendToDate": 420000,
         "valueRealised": 310000,
@@ -332,6 +334,8 @@ Optional query parameters (all PROPOSED):
 | `unverified` | The LLM answer failed a check. `answer` holds a fallback built by code from `figures` and `citations`. `notes` explain what failed. | Warning banner |
 | `insufficient_evidence` | No relevant scorecard data or charter evidence was found | "Not enough evidence to answer" message. Never a guess. |
 
+`model` is the OpenRouter model ID that drafted the answer, or `null` when no LLM was called (for example `insufficient_evidence`).
+
 `questionType` for numerical questions may come back with an empty `citations` array. Narrative questions may come back with an empty `figures` array.
 
 ### 3.6 `GET /api/reports/weekly`
@@ -381,7 +385,9 @@ export interface PortfolioService {
   getInitiatives(filter?: {
     status?: InitiativeStatus;
     businessUnit?: string;
-  }): InitiativeMetrics[];
+    sort?: keyof InitiativeMetrics;               // default "initiativeId"
+    order?: "asc" | "desc";                       // default "asc"; null values always sort last
+  }): InitiativeMetrics[];                        // filtering and sorting happen here, not in the controller
   getInitiative(initiativeId: string): InitiativeMetrics | undefined;
   getQualityReport(): DataQualityReport;
 }
@@ -391,6 +397,7 @@ export interface RagService {
   buildIndex(): Promise<{ chunkCount: number }>;  // ingestion: charters -> chunks -> embeddings -> JSON index
   loadIndex(): Promise<void>;                     // on startup
   isReady(): boolean;
+  getChunkCount(): number;                        // chunks in the loaded index; 0 when not loaded (for /api/health)
   retrieve(query: string, options?: {
     initiativeIds?: string[];                     // restrict to these initiatives
     topK?: number;                                // default 5
@@ -433,44 +440,107 @@ The four service contracts above are the ones you asked for:
 
 ---
 
-## 5. Data contracts (between Spoorthy and Hem)
+## 5. Data contracts: the official Nimbus dataset (AGREED)
 
-The RAG module reads files that Spoorthy produces, so their format is a contract too.
+**Source of truth:** the official hackathon dataset, `data/nimbus_synthetic_dataset.zip` ("Nimbus Group"). It is used **as provided**: no extra history is generated and no official file is edited. Its raw files are deliberately messy, so cleaning them is part of the Portfolio module's job. Details and the extraction procedure are in [`data/README.md`](../data/README.md).
 
-### 5.1 Charter files — `charters/` (PROPOSED)
+| Path inside the zip | Used by | Where it lives in the repo |
+|---|---|---|
+| `ds/charters/NMB-xxx_<Name>.md` (10 files) | RAG | Extracted unchanged to `charters/` |
+| `ds/data/initiatives.csv`, `weekly_usage.csv`, `cost_benefit.csv`, `fx_rates.csv` | Portfolio | Inside the zip only, for now (see §8 #12) |
+| `ds/portfolio_data.xlsx` | — | Same tables as the CSVs; also at `data/portfolio_data.xlsx`. Not read by code. |
+| `ds/evaluation/**` | **Nobody** | Judges' answer key and test material. **Never extract, index, or feed it to the assistant.** |
 
-- One file per initiative: `charters/<initiativeId>-<slug>.md`, e.g. `INIT-003-claims-triage.md`.
-- Must start with front matter so RAG can attach metadata without guessing:
+### 5.1 Initiative IDs
+
+- Ten initiatives, `NMB-001` … `NMB-010`. The canonical form is `NMB-` plus 3 digits.
+- Raw files also contain `NMB001`, lowercase `nmb-001` and IDs with trailing spaces. The Portfolio module normalises them by trimming, uppercasing and inserting the hyphen.
+- IDs that are not in `initiatives.csv` (e.g. `NMB-099`) are orphans. They are logged to the data-quality report and excluded from every total.
+
+### 5.2 Charter files: `charters/` (official format, used unchanged)
+
+- File name: `charters/NMB-xxx_<Name_With_Underscores>.md`, e.g. `NMB-004_Contract_Review_Assistant.md`. This matches the `charter_file` column in `initiatives.csv`.
+- Format: **no front matter.** Metadata is in bold label lines under the title:
 
 ```markdown
----
-initiativeId: INIT-003
-name: Claims Triage Assistant
-businessUnit: Operations
----
+# Project Charter: <Initiative name> (NMB-xxx)
 
-# Claims Triage Assistant
+**Initiative ID:** NMB-xxx
+**Initiative type:** <Copilot | Conversational Bot | Predictive Model | AI-enabled Automation>
+**Business unit:** <business unit>
+**Executive sponsor:** <name (role)>
+**Delivery lead:** <name (role)>
+**Go-live:** <Month YYYY>
 
-## Objective
-## Business Problem
-## Scope
-## Success Metrics
-## Risks
-## Status Notes
-## Lessons Learned
+## 1. Purpose and Business Case
+## 2. Scope
+## 3. Target Users and Adoption Approach
+## 4. Benefits Measurement Approach
+## 5. Risks and Dependencies
+## 6. Governance and Next Steps
 ```
 
-- Use `##` headings exactly as above. RAG chunks by these headings and uses the heading as `Evidence.section`.
-- Charters explain **why**. Do not put scorecard numbers in charters that could contradict the CSV. Targets ("aim for 60 % adoption") are fine.
+- RAG takes `initiativeId`, the name and the business unit from these lines. It chunks by `##` heading. `Evidence.section` is the heading text without its number, e.g. `Risks and Dependencies`.
+- Charters contain **targets and other narrative numbers** (e.g. an adoption target). These may be quoted with a citation, but they are never scorecard figures. Scorecard figures come only from the Portfolio module.
+- Some charters contain **planted prompt-injection text**, as an official test. Charter text is untrusted data: it is quoted and cited, never obeyed (AGENTS.md §7).
 
-### 5.2 CSV files — `data/` (PROPOSED, Spoorthy finalises)
+### 5.3 Raw tables (columns exactly as in the dataset)
 
-| File | One row per | Minimum columns |
+| File | Columns | Shape and coverage |
 |---|---|---|
-| `data/initiatives.csv` | Initiative | `initiative_id, name, business_unit, owner, stage, start_date, target_users` |
-| `data/monthly_metrics.csv` | Initiative per month | `initiative_id, month, spend, value_realised, active_users` |
+| `initiatives.csv` | `initiative_id, initiative_name, initiative_type, business_unit, go_live_date, months_live_reported, planned_annual_benefit, plan_unit, charter_file` | One row per initiative (10). Go-live dates run from 2025-08 to 2026-08. |
+| `weekly_usage.csv` | `initiative_id, week_ending, metric_name, value, unit` | Long format. **Three weeks only:** week ending 2026-11-01, 2026-11-08 and 2026-11-15. No other usage history exists, and none is generated. |
+| `cost_benefit.csv` | `initiative_id, period, measure, value, unit, basis` | Long format. **Monthly** financials from each initiative's go-live month; actuals are closed through **2026-10**. |
+| `fx_rates.csv` | `currency, rate_to_usd, note` | `USD` 1.0; `EUR` 1.08 (fixed group planning rate, all periods); `USD thousands` 1000. |
 
-Spoorthy documents the final columns and metric formulas in `data/README.md`. Some rows should be deliberately bad (missing values, negative users, unknown IDs) so the data-quality log has something to show.
+Raw values the Portfolio module must normalise (all observed in the files):
+
+| Topic | Raw variants | Canonical meaning |
+|---|---|---|
+| Dates (`week_ending`, `go_live_date`) | `2026-11-01`, `01-Nov-2026`, `Nov 1, 2026`, `1 Dec 2025` | ISO date |
+| Periods (`period`) | `2025-11`, `Feb-2026`, `February 2026`, and quarter ranges such as `Aug-Oct 2025` (basis `quarterly`) | `YYYY-MM`; a quarter covers its 3 months |
+| Usage metrics (`metric_name`) | `Licensed Users`, `licensed_users`, `licences`, `Seats` | licensed users |
+| | `Weekly Active Users`, `WAU`, `active_users_wk` | weekly active users (WAU) |
+| | `Weekly Adoption Rate` (unit `%`, NMB-008 only) | adoption % (WAU = % × licensed users / 100) |
+| Financial measures (`measure`) | `Build Cost`, `Implementation cost`, `capex_one_time` (basis `one-time`) | one-time cost |
+| | `Run Cost`, `Operating cost`, `opex_monthly` (basis `monthly`) | monthly running cost |
+| | `Realised Benefit`, `Benefit Realised`, `realized_benefit` | realised benefit for the period |
+| | `Cumulative Benefit to Date` (basis `cumulative`, NMB-005) | snapshot: use the latest one, **never sum** |
+| | `Forecast Benefit` (NMB-010, periods after 2026-10) | forecast, **excluded** from actuals |
+| Currency (`unit`, `plan_unit`) | `USD`, `EUR` (NMB-008), `USD thousands` (NMB-009) | USD via `fx_rates.csv` |
+| Values | Plain numbers, `$60,000`-style strings, blanks | number, or missing (logged) |
+
+Known data-quality cases in the raw files: blank usage values, a missing licence count, a WAU larger than licensed users, an exact duplicate row, a negative cost, an orphan ID, and `months_live_reported` that disagrees with the go-live date (including a value in weeks). The handling rules belong to the Portfolio module and are listed in `server/src/services/portfolio/README.md`. Each repair or exclusion produces a `DataQualityIssue` (§2).
+
+### 5.4 Calculations and status (scorecard semantics)
+
+| Metric | Definition |
+|---|---|
+| As-of | Latest usage week, `2026-11-15`. Financial actuals are through `2026-10`. Months live = full months from go-live (1st of the month) to `2026-11-01`, derived from `go_live_date` and not from `months_live_reported`. |
+| `spendToDate` | Sum of one-time and monthly costs through 2026-10, in USD |
+| `valueRealised` | Sum of realised benefit through 2026-10, or the latest cumulative snapshot where only snapshots exist, in USD |
+| `roi` | `(valueRealised − spendToDate) / spendToDate`; `null` if spend is 0 |
+| `adoptionRate` | WAU / licensed users in the latest week (2026-11-15) |
+| `paybackMonths` | `spendToDate / (valueRealised / monthsLive)`; `null` if there is no realised benefit |
+| `status` | `off_track` (**Red**) if adoption < 0.30 or ROI < 0; `on_track` (**Green**) if adoption ≥ 0.60 and ROI > 0; otherwise `at_risk` (**Amber**) |
+
+Status labels: the dataset says Green, Amber and Red; the API always uses the §2 values `on_track`, `at_risk` and `off_track`. The client may show the colour names.
+
+### 5.5 Representation (backend and frontend)
+
+- **IDs:** canonical `NMB-xxx` everywhere: API, citations, charters, logs.
+- **Money:** USD numbers, no symbols (§1). The client formats them, e.g. `$1.2M`.
+- **Ratios:** decimals (`0.42`, `-0.26`). Unknown values are `null`; the client shows `—`, and a real `0` stays `0`.
+- **Dates:** `asOf` and `weekEnding` are `2026-11-15`.
+- **Field mapping to §2 `InitiativeMetrics`:**
+  - `initiativeId` ← `initiative_id`
+  - `name` ← `initiative_name`
+  - `businessUnit` ← `business_unit`
+  - `spendToDate`, `valueRealised`, `roi`, `adoptionRate`, `paybackMonths` and `status` as in §5.4
+  - `dataQualityIssueCount` = the number of `DataQualityIssue`s for that initiative
+  - `initiativeType` ← `initiative_type` (verbatim). It replaced `stage`, which has no column in the dataset (§8 #13).
+  - `owner` has **no column in the dataset**, so it is `null`; nothing is invented. It may later come from the charter's "Delivery lead" line (§8 #13).
+- **Python:** `data/spoorthi.py` is a **reference only**. Production calculations are implemented in TypeScript in the Portfolio module. The backend never runs Python.
 
 ---
 
@@ -481,9 +551,11 @@ Defined in `server/.env` (never committed). `server/.env.example` is committed w
 | Variable | Used by | Example |
 |---|---|---|
 | `PORT` | App | `3001` |
-| `CLIENT_ORIGIN` | App (CORS) | `http://localhost:5173` |
-| `OPENROUTER_API_KEY` | AI | *(secret)* |
-| `OPENROUTER_MODEL` | AI | *(to be decided)* |
+| `CLIENT_ORIGIN` | App (CORS) | `http://localhost:5173` (comma-separated list allowed; blank = `http://localhost:5173` and `http://127.0.0.1:5173`) |
+| `ANTHROPIC_API_KEY` | AI (answers, preferred) | *(secret)* |
+| `ANTHROPIC_MODEL` | AI | `claude-sonnet-5-5` (default when blank) |
+| `OPENROUTER_API_KEY` | AI (alternative answers when no Anthropic key); may also serve embeddings | *(secret)* |
+| `OPENROUTER_MODEL` | AI (alternative) | `anthropic/claude-sonnet-5.5` |
 | `EMBEDDING_API_KEY` | RAG | *(secret)* |
 | `EMBEDDING_BASE_URL` | RAG | *(to be decided)* |
 | `EMBEDDING_MODEL` | RAG | *(to be decided)* |
@@ -506,14 +578,17 @@ These are **not settled**. Build against the PROPOSED defaults and keep them eas
 
 | # | Decision | Proposed default | Who decides |
 |---|---|---|---|
-| 1 | Portfolio currency | Single currency, unlabeled numbers; client shows `£`/`$` from one constant | Spoorthy + Seren |
-| 2 | Exact ROI / adoption / payback formulas | ROI as in §2; adoption = latest month `active_users / target_users`; payback = months until cumulative value ≥ cumulative spend, else `null` | Spoorthy |
-| 3 | `status` rule | `off_track` if ROI < 0 or adoption < 0.3; `at_risk` if ROI < 0.1 or adoption < 0.5; else `on_track` | Spoorthy + Animesh |
+| 1 | Portfolio currency | **Decided:** USD via the dataset's `fx_rates.csv` (§5.3) | Spoorthy + Seren |
+| 2 | Exact ROI / adoption / payback formulas | **Decided:** as in §5.4, following the official dataset's definitions | Spoorthy |
+| 3 | `status` rule | **Decided:** as in §5.4 (Red / Amber / Green mapped to `off_track` / `at_risk` / `on_track`) | Spoorthy + Animesh |
 | 4 | Attention-flag thresholds | negative ROI → high; adoption < 0.3 → medium; payback > 24 months or `null` after 12 months of spend → medium; any data-quality error → low | Animesh |
-| 5 | Embedding provider/model | To verify (see architecture §8) | Hem |
-| 6 | OpenRouter model | To decide | Hem |
-| 7 | Question router | Rules first (metric keywords + initiative names), LLM classification only if needed | Hem |
+| 5 | Embedding provider/model | **Decided:** `openai/text-embedding-3-small` via OpenRouter (1536 dimensions); verified live, 60 charter chunks indexed, search ≈0.1 ms | Hem |
+| 6 | Answer model | **Decided:** Claude Sonnet 5.5 through the Anthropic API (`claude-sonnet-5-5`, `ANTHROPIC_API_KEY`), using the team's Claude API credits. OpenRouter (`anthropic/claude-sonnet-5.5`) remains a configured alternative and still serves embeddings (#5): the Anthropic API has no embeddings endpoint. `/api/health` keeps the field name `openRouterConfigured` and reports whether any answer model is configured. | Hem |
+| 7 | Question router | **Decided:** rules (metric keywords, status/condition words, initiative IDs and names) in `services/ai/router.ts`; no LLM classification | Hem |
 | 8 | Vector index file location | `server/storage/vector-index.json`, generated, git-ignored | Hem |
 | 9 | Shared types | Server copy in `server/src/types/contracts.ts`; client mirrors in `client/src/types/api.ts` | Hem + Seren |
 | 10 | Test runner and dev tooling | Vitest for tests, `tsx` for running TS, Vite for the client (confirmed when Hem scaffolds) | Hem |
-| 11 | Weekly brief "week" | `weekEnding` = latest `asOf` in the data, not today's date | Animesh |
+| 11 | Weekly brief "week" | `weekEnding` = latest `asOf` in the data (`2026-11-15`), not today's date | Animesh |
+| 12 | Where the Portfolio module reads raw tables | Proposed: extract the 4 `ds/data/*.csv` files **unchanged** to `data/raw/`. Until approved, they stay inside the zip. | Hem + Spoorthy |
+| 13 | `InitiativeMetrics.owner` and `.stage` (no dataset column) | **Decided:** `stage` replaced by `initiativeType` (from `initiative_type`). `owner` is `string \| null`: `null` for now, possibly the charter's "Delivery lead" later. Server types and client updated; Animesh's `reporting/contract-types.ts` copy still has `stage`. | Hem |
+| 14 | Extra dataset metrics (WAU change, average monthly benefit, run-rate vs plan, months live) | Proposed: add them to `InitiativeMetrics` only if a screen or answer needs them | Hem |

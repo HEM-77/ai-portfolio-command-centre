@@ -1,0 +1,11 @@
+initiative_id,initiative_name,business_unit,initiative_type,licensed_users_latest,wau_first,wau_latest,adoption,wau_change,realised_benefit_usd,total_cost_usd,roi,months_live,avg_monthly_benefit_usd,payback_months,planned_annual_benefit_usd,runrate_vs_plan,status
+NMB-001,Nimbus Service Copilot,Customer Service,Copilot,2000,1150,1260,0.63,0.095652,2250000.0,780000.0,1.884615,12,187500.0,4.16,2400000.0,0.9375,Green
+NMB-002,HR Helpdesk Bot,Human Resources,Conversational Bot,5000,3300,3000,0.6,-0.090909,540000.0,360000.0,0.5,9,60000.0,6.0,900000.0,0.8,Green
+NMB-003,Demand Forecasting Model,Supply Chain,Predictive Model,150,110,135,0.9,0.227273,3000000.0,2100000.0,0.428571,15,200000.0,10.5,3000000.0,0.8,Green
+NMB-004,Contract Review Assistant,Legal,Copilot,400,100,140,0.35,0.4,420000.0,350000.0,0.2,7,60000.0,5.8333,1000000.0,0.72,Amber
+NMB-005,Sales Lead Scoring,Sales,Predictive Model,300,190,195,0.65,0.026316,660000.0,660000.0,0.0,11,60000.0,11.0,800000.0,0.9,Amber
+NMB-006,Field Engineer Knowledge Bot,Operations,Conversational Bot,1200,330,300,0.25,-0.090909,330000.0,300000.0,0.1,6,55000.0,5.4545,1200000.0,0.55,Red
+NMB-007,Invoice Processing Automation,Finance,AI-enabled Automation,250,60,75,0.3,0.25,1100000.0,1000000.0,0.1,10,110000.0,9.0909,1200000.0,1.1,Amber
+NMB-008,Marketing Content Copilot,Marketing,Copilot,800,680,600,0.75,-0.117647,432000.0,524880.0,-0.176955,8,54000.0,9.72,756000.0,0.857143,Red
+NMB-009,Predictive Maintenance Model,Manufacturing,Predictive Model,350,250,280,0.8,0.12,3900000.0,2600000.0,0.5,13,300000.0,8.6667,4000000.0,0.9,Green
+NMB-010,IT Incident Triage Bot,Information Technology,Conversational Bot,900,250,315,0.35,0.26,60000.0,210000.0,-0.714286,3,20000.0,10.5,600000.0,0.4,Red

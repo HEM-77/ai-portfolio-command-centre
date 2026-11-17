@@ -1,0 +1,15 @@
+initiative_id,week_ending,metric_name,value,unit
+NMB-901,2026-11-01,Licensed Users,100,users
+nmb-901 ,01-Nov-2026,WAU,40,users
+NMB901,"Nov 8, 2026",Seats,100,users
+NMB-901,"Nov 8, 2026",active_users_wk,,users
+NMB-902,2026-11-01,licences,50,users
+NMB-902,2026-11-01,Weekly Adoption Rate,80.0,%
+NMB-902,2026-11-01,Weekly Adoption Rate,80.0,%
+NMB-902,2026-11-01,licences,55,users
+NMB-999,2026-11-01,WAU,5,users
+NMB-901,2026-11-15,Daily Users,5,users
+NMB-901,15/11/2026,WAU,5,users
+NMB-901,2026-11-15,WAU,lots,users
+NMB-903,2026-11-15,WAU,5,users
+NMB-901,2026-11-15,WAU,5
