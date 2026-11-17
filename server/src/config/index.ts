@@ -9,19 +9,31 @@ const ENV_FILE_PATH = resolve(import.meta.dirname, "..", "..", ".env");
 
 // Documented defaults: the server runs on 3001 and the Vite client on 5173 (contract §1, §6).
 const DEFAULT_PORT = 3001;
-const DEFAULT_CLIENT_ORIGIN = "http://localhost:5173";
+// Both spellings of the local Vite origin: the dev script binds to 127.0.0.1 and prints that URL,
+// while localhost is what people usually type. A browser treats them as different origins.
+/** The Claude model chosen for answers (contract §8 #6); ANTHROPIC_MODEL overrides it. */
+const DEFAULT_ANTHROPIC_MODEL = "claude-sonnet-5-5";
+
+const DEFAULT_CLIENT_ORIGINS =["http://localhost:5173", "http://127.0.0.1:5173"];
 
 export interface Config {
   port: number;
-  clientOrigin: string;
+  clientOrigins: string[]; // CLIENT_ORIGIN, comma-separated; exact origins allowed by CORS
+  anthropic: {
+    apiKey: string | null; // Claude API key: when set, Claude answers questions (contract §8 #6)
+    model: string; // ANTHROPIC_MODEL, default claude-sonnet-5-5
+  };
   openRouter: {
-    apiKey: string | null;
-    model: string | null; // undecided: contract §8 #6
+    apiKey: string | null; // embeddings may reuse it; answers only when no Anthropic key is set
+    model: string | null;
   };
   embedding: {
     apiKey: string | null;
     baseUrl: string | null; // undecided: contract §8 #5
     model: string | null; // undecided: contract §8 #5
+  };
+  database: {
+    url: string | null; // postgres://user:password@host:port/db; a secret, never logged
   };
 }
 
@@ -54,6 +66,12 @@ function parsePort(raw: string | null): number {
   return port;
 }
 
+/** "a, b" -> ["a", "b"]; blank -> the two local Vite origins. Never a wildcard. */
+function parseOrigins(raw: string | null): string[] {
+  const origins = (raw ?? "").split(",").map((o) => o.trim()).filter(Boolean);
+  return origins.length > 0 ? origins : [...DEFAULT_CLIENT_ORIGINS];
+}
+
 /**
  * Build the config from an env object. Pure apart from its input, so tests can pass a fake env.
  *
@@ -63,7 +81,11 @@ function parsePort(raw: string | null): number {
 export function loadConfig(env: Env): Config {
   return {
     port: parsePort(optional(env, "PORT")),
-    clientOrigin: optional(env, "CLIENT_ORIGIN") ?? DEFAULT_CLIENT_ORIGIN,
+    clientOrigins: parseOrigins(optional(env, "CLIENT_ORIGIN")),
+    anthropic: {
+      apiKey: optional(env, "ANTHROPIC_API_KEY"),
+      model: optional(env, "ANTHROPIC_MODEL") ?? DEFAULT_ANTHROPIC_MODEL,
+    },
     openRouter: {
       apiKey: optional(env, "OPENROUTER_API_KEY"),
       model: optional(env, "OPENROUTER_MODEL"),
@@ -73,12 +95,33 @@ export function loadConfig(env: Env): Config {
       baseUrl: optional(env, "EMBEDDING_BASE_URL"),
       model: optional(env, "EMBEDDING_MODEL"),
     },
+    database: {
+      url: optional(env, "DATABASE_URL"),
+    },
   };
 }
 
-/** True when everything needed to call OpenRouter is set. Used by /api/health. */
+/** True when a Claude API key is set: Claude (Anthropic API) answers questions. */
+export function isAnthropicConfigured(c: Config): boolean {
+  return c.anthropic.apiKey !== null;
+}
+
+/**
+ * True when some answer model is configured (Claude, or OpenRouter as the alternative). Reported by
+ * /api/health as `openRouterConfigured`, the field name the contract (§3.1) still uses.
+ */
+export function isAnswerModelConfigured(c: Config): boolean {
+  return isAnthropicConfigured(c) || isOpenRouterConfigured(c);
+}
+
+/** True when everything needed to call OpenRouter for answers is set. */
 export function isOpenRouterConfigured(c: Config): boolean {
   return c.openRouter.apiKey !== null && c.openRouter.model !== null;
+}
+
+/** True when DATABASE_URL is set. Optional at startup, like the AI keys: the app runs without it. */
+export function isDatabaseConfigured(c: Config): boolean {
+  return c.database.url !== null;
 }
 
 /** True when everything needed to call the embedding provider is set. Used by /api/health. */

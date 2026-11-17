@@ -17,7 +17,7 @@ const SORT_FIELDS: Record<keyof InitiativeMetrics, true> = {
   name: true,
   businessUnit: true,
   owner: true,
-  stage: true,
+  initiativeType: true,
   status: true,
   spendToDate: true,
   valueRealised: true,

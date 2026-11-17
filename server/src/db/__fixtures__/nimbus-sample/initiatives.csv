@@ -1,0 +1,4 @@
+initiative_id,initiative_name,initiative_type,business_unit,go_live_date,months_live_reported,planned_annual_benefit,plan_unit,charter_file
+NMB-901,Fixture Copilot,Copilot,Operations,2026-01-01,10,1200000,USD,charters/NMB-901_Fixture_Copilot.md
+nmb902 ,Fixture Bot,Conversational Bot,Finance,1 Feb 2026,9 weeks,500,USD thousands,charters/NMB-902_Fixture_Bot.md
+NMB-903,Fixture Bad Date,Copilot,Legal,31 Feb 2026,1,100,USD,charters/NMB-903_Fixture_Bad_Date.md

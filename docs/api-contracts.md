@@ -56,21 +56,21 @@ Every endpoint returns one of these two shapes.
 These are the TypeScript shapes behind the JSON. **PROPOSED** location: `server/src/types/contracts.ts` (owned by Hem). The client keeps a matching copy in `client/src/types/api.ts` (owned by Seren).
 
 ```ts
-type InitiativeStage = "discovery" | "pilot" | "scaling" | "production" | "paused";
+type InitiativeType = "Copilot" | "Conversational Bot" | "Predictive Model" | "AI-enabled Automation"; // verbatim initiative_type
 type InitiativeStatus = "on_track" | "at_risk" | "off_track";
 
 /** One row of the portfolio scorecard. All numbers are calculated by the Portfolio module. */
 interface InitiativeMetrics {
-  initiativeId: string;          // "INIT-001"
+  initiativeId: string;          // "NMB-001"
   name: string;
   businessUnit: string;
-  owner: string;
-  stage: InitiativeStage;
-  status: InitiativeStatus;      // derived by rule, see §8
+  owner: string | null;          // no dataset column (§8 #13): null until sourced from the charter Delivery lead
+  initiativeType: InitiativeType; // initiatives.csv initiative_type (replaced `stage`, §8 #13)
+  status: InitiativeStatus;      // derived by rule, see §5.4
   spendToDate: number;
   valueRealised: number;
   roi: number | null;            // (valueRealised - spendToDate) / spendToDate; null if spend is 0
-  adoptionRate: number | null;   // activeUsers / targetUsers
+  adoptionRate: number | null;   // weekly active users / licensed users, latest week
   paybackMonths: number | null;  // null if not yet paying back
   dataQualityIssueCount: number;
   asOf: string;                  // date of the latest data point
@@ -230,8 +230,8 @@ The controller validates these and passes them to `PortfolioService.getInitiativ
         "initiativeId": "INIT-003",
         "name": "Claims Triage Assistant",
         "businessUnit": "Operations",
-        "owner": "Head of Claims",
-        "stage": "pilot",
+        "owner": null,
+        "initiativeType": "Copilot",
         "status": "off_track",
         "spendToDate": 420000,
         "valueRealised": 310000,
@@ -538,7 +538,8 @@ Status labels: the dataset says Green, Amber and Red; the API always uses the §
   - `businessUnit` ← `business_unit`
   - `spendToDate`, `valueRealised`, `roi`, `adoptionRate`, `paybackMonths` and `status` as in §5.4
   - `dataQualityIssueCount` = the number of `DataQualityIssue`s for that initiative
-  - `owner` and `stage` have **no column in the dataset**. See §8 #13; nothing is invented until that is decided.
+  - `initiativeType` ← `initiative_type` (verbatim). It replaced `stage`, which has no column in the dataset (§8 #13).
+  - `owner` has **no column in the dataset**, so it is `null`; nothing is invented. It may later come from the charter's "Delivery lead" line (§8 #13).
 - **Python:** `data/spoorthi.py` is a **reference only**. Production calculations are implemented in TypeScript in the Portfolio module. The backend never runs Python.
 
 ---
@@ -550,9 +551,11 @@ Defined in `server/.env` (never committed). `server/.env.example` is committed w
 | Variable | Used by | Example |
 |---|---|---|
 | `PORT` | App | `3001` |
-| `CLIENT_ORIGIN` | App (CORS) | `http://localhost:5173` |
-| `OPENROUTER_API_KEY` | AI | *(secret)* |
-| `OPENROUTER_MODEL` | AI | *(to be decided)* |
+| `CLIENT_ORIGIN` | App (CORS) | `http://localhost:5173` (comma-separated list allowed; blank = `http://localhost:5173` and `http://127.0.0.1:5173`) |
+| `ANTHROPIC_API_KEY` | AI (answers, preferred) | *(secret)* |
+| `ANTHROPIC_MODEL` | AI | `claude-sonnet-5-5` (default when blank) |
+| `OPENROUTER_API_KEY` | AI (alternative answers when no Anthropic key); may also serve embeddings | *(secret)* |
+| `OPENROUTER_MODEL` | AI (alternative) | `anthropic/claude-sonnet-5.5` |
 | `EMBEDDING_API_KEY` | RAG | *(secret)* |
 | `EMBEDDING_BASE_URL` | RAG | *(to be decided)* |
 | `EMBEDDING_MODEL` | RAG | *(to be decided)* |
@@ -579,13 +582,13 @@ These are **not settled**. Build against the PROPOSED defaults and keep them eas
 | 2 | Exact ROI / adoption / payback formulas | **Decided:** as in §5.4, following the official dataset's definitions | Spoorthy |
 | 3 | `status` rule | **Decided:** as in §5.4 (Red / Amber / Green mapped to `off_track` / `at_risk` / `on_track`) | Spoorthy + Animesh |
 | 4 | Attention-flag thresholds | negative ROI → high; adoption < 0.3 → medium; payback > 24 months or `null` after 12 months of spend → medium; any data-quality error → low | Animesh |
-| 5 | Embedding provider/model | To verify (see architecture §8) | Hem |
-| 6 | OpenRouter model | To decide | Hem |
-| 7 | Question router | Rules first (metric keywords + initiative names), LLM classification only if needed | Hem |
+| 5 | Embedding provider/model | **Decided:** `openai/text-embedding-3-small` via OpenRouter (1536 dimensions); verified live, 60 charter chunks indexed, search ≈0.1 ms | Hem |
+| 6 | Answer model | **Decided:** Claude Sonnet 5.5 through the Anthropic API (`claude-sonnet-5-5`, `ANTHROPIC_API_KEY`), using the team's Claude API credits. OpenRouter (`anthropic/claude-sonnet-5.5`) remains a configured alternative and still serves embeddings (#5): the Anthropic API has no embeddings endpoint. `/api/health` keeps the field name `openRouterConfigured` and reports whether any answer model is configured. | Hem |
+| 7 | Question router | **Decided:** rules (metric keywords, status/condition words, initiative IDs and names) in `services/ai/router.ts`; no LLM classification | Hem |
 | 8 | Vector index file location | `server/storage/vector-index.json`, generated, git-ignored | Hem |
 | 9 | Shared types | Server copy in `server/src/types/contracts.ts`; client mirrors in `client/src/types/api.ts` | Hem + Seren |
 | 10 | Test runner and dev tooling | Vitest for tests, `tsx` for running TS, Vite for the client (confirmed when Hem scaffolds) | Hem |
 | 11 | Weekly brief "week" | `weekEnding` = latest `asOf` in the data (`2026-11-15`), not today's date | Animesh |
 | 12 | Where the Portfolio module reads raw tables | Proposed: extract the 4 `ds/data/*.csv` files **unchanged** to `data/raw/`. Until approved, they stay inside the zip. | Hem + Spoorthy |
-| 13 | `InitiativeMetrics.owner` and `.stage` (no dataset column) | Proposed: replace `stage` with `initiativeType` (from `initiative_type`). `owner` becomes the charter's "Delivery lead", or is removed. A contract change; Seren and Animesh are affected. | Hem |
+| 13 | `InitiativeMetrics.owner` and `.stage` (no dataset column) | **Decided:** `stage` replaced by `initiativeType` (from `initiative_type`). `owner` is `string \| null`: `null` for now, possibly the charter's "Delivery lead" later. Server types and client updated; Animesh's `reporting/contract-types.ts` copy still has `stage`. | Hem |
 | 14 | Extra dataset metrics (WAU change, average monthly benefit, run-rate vs plan, months live) | Proposed: add them to `InitiativeMetrics` only if a screen or answer needs them | Hem |

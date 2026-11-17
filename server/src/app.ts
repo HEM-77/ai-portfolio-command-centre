@@ -28,7 +28,7 @@ export function createApp(deps: AppDependencies): Express {
   const app = express();
 
   app.disable("x-powered-by");
-  app.use(cors({ origin: deps.config.clientOrigin }));
+  app.use(cors({ origin: deps.config.clientOrigins }));
   app.use(express.json({ limit: JSON_BODY_LIMIT }));
 
   app.use("/api", createHealthRouter(deps));

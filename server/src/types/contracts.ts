@@ -34,21 +34,22 @@ export type ApiResponse<T> = ApiSuccess<T> | ApiFailure;
 // §2 Portfolio types (produced by the Portfolio module)
 // ---------------------------------------------------------------------------
 
-export type InitiativeStage = "discovery" | "pilot" | "scaling" | "production" | "paused";
+/** Verbatim `initiative_type` values of the Nimbus dataset (contract §5.2, §8 #13). */
+export type InitiativeType = "Copilot" | "Conversational Bot" | "Predictive Model" | "AI-enabled Automation";
 export type InitiativeStatus = "on_track" | "at_risk" | "off_track";
 
 /** One row of the portfolio scorecard. All numbers are calculated by the Portfolio module. */
 export interface InitiativeMetrics {
-  initiativeId: string; // "INIT-001"
+  initiativeId: string; // "NMB-001"
   name: string;
   businessUnit: string;
-  owner: string;
-  stage: InitiativeStage;
-  status: InitiativeStatus; // derived by rule, see contract §8 #3
+  owner: string | null; // no dataset column (contract §8 #13): null until sourced from the charter
+  initiativeType: InitiativeType; // from initiatives.csv initiative_type (replaces `stage`, §8 #13)
+  status: InitiativeStatus; // derived by rule, see contract §5.4
   spendToDate: number;
   valueRealised: number;
   roi: number | null; // (valueRealised - spendToDate) / spendToDate; null if spend is 0
-  adoptionRate: number | null; // activeUsers / targetUsers
+  adoptionRate: number | null; // weekly active users / licensed users in the latest week
   paybackMonths: number | null; // null if not yet paying back
   dataQualityIssueCount: number;
   asOf: string; // ISO date of the latest data point

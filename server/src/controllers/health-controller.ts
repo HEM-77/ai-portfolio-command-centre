@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { isEmbeddingConfigured, isOpenRouterConfigured, type Config } from "../config/index.js";
+import { isAnswerModelConfigured, isEmbeddingConfigured, type Config } from "../config/index.js";
 import type { HealthStatus, PortfolioService, RagService } from "../types/contracts.js";
 import { sendOk } from "./respond.js";
 
@@ -24,7 +24,8 @@ export function getHealthStatus(deps: HealthDependencies): HealthStatus {
     initiativeCount: scorecardLoaded && deps.portfolio ? deps.portfolio.getSummary().initiativeCount : 0,
     vectorIndexLoaded,
     chunkCount: vectorIndexLoaded && deps.rag ? deps.rag.getChunkCount() : 0,
-    openRouterConfigured: isOpenRouterConfigured(deps.config),
+    // Contract field name kept (§3.1): true when any answer model is configured (Claude or OpenRouter).
+    openRouterConfigured: isAnswerModelConfigured(deps.config),
     embeddingConfigured: isEmbeddingConfigured(deps.config),
   };
 

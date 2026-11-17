@@ -1,0 +1,11 @@
+initiative_id,initiative_name,initiative_type,business_unit,go_live_date,months_live_reported,planned_annual_benefit,plan_unit,charter_file
+NMB-001,Nimbus Service Copilot,Copilot,Customer Service,2025-11-01,12,2400000,USD,charters/NMB-001_Nimbus_Service_Copilot.md
+NMB-002,HR Helpdesk Bot,Conversational Bot,Human Resources,2026-02-01,9,900000,USD,charters/NMB-002_HR_Helpdesk_Bot.md
+NMB-003,Demand Forecasting Model,Predictive Model,Supply Chain,2025-08-01,15,3000000,USD,charters/NMB-003_Demand_Forecasting_Model.md
+NMB-004,Contract Review Assistant,Copilot,Legal,2026-04-01,7,1000000,USD,charters/NMB-004_Contract_Review_Assistant.md
+NMB-005,Sales Lead Scoring,Predictive Model,Sales,1 Dec 2025,11,800000,USD,charters/NMB-005_Sales_Lead_Scoring.md
+NMB-006,Field Engineer Knowledge Bot,Conversational Bot,Operations,2026-05-01,26 weeks,1200000,USD,charters/NMB-006_Field_Engineer_Knowledge_Bot.md
+NMB-007,Invoice Processing Automation,AI-enabled Automation,Finance,2026-01-01,12,1200000,USD,charters/NMB-007_Invoice_Processing_Automation.md
+NMB-008,Marketing Content Copilot,Copilot,Marketing,2026-03-01,8,700000,EUR,charters/NMB-008_Marketing_Content_Copilot.md
+NMB-009,Predictive Maintenance Model,Predictive Model,Manufacturing,2025-10-01,13,4000,USD thousands,charters/NMB-009_Predictive_Maintenance_Model.md
+NMB-010,IT Incident Triage Bot,Conversational Bot,Information Technology,2026-08-01,3,600000,USD,charters/NMB-010_IT_Incident_Triage_Bot.md

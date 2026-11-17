@@ -1,6 +1,7 @@
 import request from "supertest";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createApp } from "./app.js";
+import { loadConfig } from "./config/index.js";
 import { createMockPortfolioService } from "./mocks/mock-portfolio-service.js";
 import { expectError, expectOk, mockDependencies, testConfig } from "./testing/test-app.js";
 import { AppError } from "./types/app-error.js";
@@ -132,8 +133,22 @@ describe("dependency injection and NOT_READY", () => {
 
 describe("CORS", () => {
   it("allows the configured client origin", async () => {
-    const app = createApp({ ...mockDependencies(), config: testConfig({ clientOrigin: "http://localhost:5173" }) });
+    const app = createApp({ ...mockDependencies(), config: testConfig({ clientOrigins: ["http://localhost:5173"] }) });
     const res = await request(app).get("/api/health").set("Origin", "http://localhost:5173");
     expect(res.headers["access-control-allow-origin"]).toBe("http://localhost:5173");
+  });
+
+  it("allows both local Vite origins by default and no others", async () => {
+    const app = createApp(mockDependencies());
+    for (const origin of ["http://localhost:5173", "http://127.0.0.1:5173"]) {
+      const res = await request(app).get("/api/health").set("Origin", origin);
+      expect(res.headers["access-control-allow-origin"]).toBe(origin);
+    }
+    const other = await request(app).get("/api/health").set("Origin", "http://evil.example");
+    expect(other.headers["access-control-allow-origin"]).toBeUndefined();
+  });
+
+  it("reads a comma-separated CLIENT_ORIGIN", () => {
+    expect(loadConfig({ CLIENT_ORIGIN: "http://a.test, http://b.test" }).clientOrigins).toEqual(["http://a.test", "http://b.test"]);
   });
 });

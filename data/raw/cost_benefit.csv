@@ -1,0 +1,194 @@
+initiative_id,period,measure,value,unit,basis
+NMB-001,2025-11,Build Cost,300000,USD,one-time
+NMB001,2025-11,Run Cost,40000,USD,monthly
+NMB-001,2025-12,Run Cost,40000,USD,monthly
+nmb-001 ,2026-01,Run Cost,40000,USD,monthly
+NMB-001,2026-02,Run Cost,40000,USD,monthly
+NMB-001,2026-03,Run Cost,40000,USD,monthly
+nmb-001 ,2026-04,Run Cost,40000,USD,monthly
+NMB-001,2026-05,Run Cost,40000,USD,monthly
+NMB-001,2026-06,Run Cost,40000,USD,monthly
+NMB-001,2026-07,Run Cost,40000,USD,monthly
+NMB-001,2026-08,Run Cost,40000,USD,monthly
+NMB-001,2026-09,Run Cost,40000,USD,monthly
+NMB-001,2026-10,Run Cost,40000,USD,monthly
+nmb-001 ,2025-11,Realised Benefit,114600,USD,monthly
+NMB-001,2025-12,Realised Benefit,127800,USD,monthly
+NMB-001,2026-01,Realised Benefit,141100,USD,monthly
+NMB-001,2026-02,Realised Benefit,154400,USD,monthly
+NMB-001,2026-03,Realised Benefit,167600,USD,monthly
+NMB-001,2026-04,Realised Benefit,180900,USD,monthly
+NMB-001,2026-05,Realised Benefit,194100,USD,monthly
+NMB001,2026-06,Realised Benefit,207400,USD,monthly
+NMB001,2026-07,Realised Benefit,220600,USD,monthly
+NMB-001,2026-08,Realised Benefit,233900,USD,monthly
+NMB-001,2026-09,Realised Benefit,247200,USD,monthly
+NMB-001,2026-10,Realised Benefit,260400,USD,monthly
+NMB-002,Feb-2026,Implementation cost,90000,USD,one-time
+NMB-002,Feb-2026,Operating cost,30000,USD,monthly
+NMB-002,Mar-2026,Operating cost,30000,USD,monthly
+NMB-002,Apr-2026,Operating cost,30000,USD,monthly
+nmb-002 ,May-2026,Operating cost,30000,USD,monthly
+NMB-002,Jun-2026,Operating cost,30000,USD,monthly
+NMB-002,Jun-2026,Operating cost,30000,USD,monthly
+NMB-002,Jul-2026,Operating cost,30000,USD,monthly
+nmb-002 ,Aug-2026,Operating cost,30000,USD,monthly
+NMB-002,Sep-2026,Operating cost,30000,USD,monthly
+NMB002,Oct-2026,Operating cost,30000,USD,monthly
+NMB-002,Feb-2026,Benefit Realised,36700,USD,monthly
+NMB-002,Mar-2026,Benefit Realised,42500,USD,monthly
+NMB-002,Apr-2026,Benefit Realised,48300,USD,monthly
+NMB-002,May-2026,Benefit Realised,54200,USD,monthly
+NMB-002,Jun-2026,Benefit Realised,60000,USD,monthly
+NMB-002,Jul-2026,Benefit Realised,65800,USD,monthly
+NMB-002,Aug-2026,Benefit Realised,71700,USD,monthly
+NMB-002,Sep-2026,Benefit Realised,77500,USD,monthly
+NMB-002,Oct-2026,Benefit Realised,83300,USD,monthly
+NMB-003,August 2025,capex_one_time,600000,USD,one-time
+NMB-003,August 2025,opex_monthly,100000,USD,monthly
+NMB-003,September 2025,opex_monthly,100000,USD,monthly
+NMB-003,October 2025,opex_monthly,100000,USD,monthly
+NMB-003,November 2025,opex_monthly,100000,USD,monthly
+nmb-003 ,December 2025,opex_monthly,100000,USD,monthly
+NMB-003,January 2026,opex_monthly,100000,USD,monthly
+NMB-003,February 2026,opex_monthly,100000,USD,monthly
+NMB-003,March 2026,opex_monthly,100000,USD,monthly
+NMB-003,April 2026,opex_monthly,100000,USD,monthly
+NMB-003,May 2026,opex_monthly,100000,USD,monthly
+NMB-003,June 2026,opex_monthly,100000,USD,monthly
+NMB-003,July 2026,opex_monthly,100000,USD,monthly
+NMB-003,August 2026,opex_monthly,100000,USD,monthly
+NMB-003,September 2026,opex_monthly,100000,USD,monthly
+NMB-003,October 2026,opex_monthly,100000,USD,monthly
+NMB-003,Aug-Oct 2025,realized_benefit,399900,USD,quarterly
+NMB-003,Nov 2025-Jan 2026,realized_benefit,500100,USD,quarterly
+NMB-003,Feb-Apr 2026,realized_benefit,600000,USD,quarterly
+NMB-003,May-Jul 2026,realized_benefit,699900,USD,quarterly
+NMB-003,Aug-Oct 2026,realized_benefit,800100,USD,quarterly
+NMB-004,2026-04,Build Cost,140000,USD,one-time
+NMB-004,2026-04,Run Cost,30000,USD,monthly
+NMB-004,2026-05,Run Cost,30000,USD,monthly
+NMB-004,2026-06,Run Cost,30000,USD,monthly
+NMB004,2026-07,Run Cost,-30000,USD,monthly
+nmb-004 ,2026-08,Run Cost,30000,USD,monthly
+NMB004,2026-09,Run Cost,30000,USD,monthly
+NMB-004,2026-10,Run Cost,30000,USD,monthly
+NMB-004,2026-04,Realised Benefit,36700,USD,monthly
+NMB-004,2026-05,Realised Benefit,44400,USD,monthly
+nmb-004 ,2026-06,Realised Benefit,52200,USD,monthly
+NMB-004,2026-07,Realised Benefit,60000,USD,monthly
+NMB-004,2026-08,Realised Benefit,67800,USD,monthly
+NMB-004,2026-09,Realised Benefit,75600,USD,monthly
+NMB-004,2026-10,Realised Benefit,83300,USD,monthly
+NMB-005,Dec-2025,Implementation cost,220000,USD,one-time
+NMB005,Dec-2025,Operating cost,40000,USD,monthly
+NMB-005,Jan-2026,Operating cost,40000,USD,monthly
+NMB-005,Feb-2026,Operating cost,40000,USD,monthly
+NMB-005,Mar-2026,Operating cost,40000,USD,monthly
+NMB-005,Apr-2026,Operating cost,40000,USD,monthly
+NMB-005,May-2026,Operating cost,40000,USD,monthly
+NMB-005,Jun-2026,Operating cost,40000,USD,monthly
+NMB-005,Jul-2026,Operating cost,40000,USD,monthly
+NMB-005,Aug-2026,Operating cost,40000,USD,monthly
+NMB-005,Sep-2026,Operating cost,40000,USD,monthly
+NMB-005,Oct-2026,Operating cost,40000,USD,monthly
+NMB-005,Dec-2025,Cumulative Benefit to Date,36700,USD,cumulative
+NMB-005,Jan-2026,Cumulative Benefit to Date,78000,USD,cumulative
+NMB-005,Feb-2026,Cumulative Benefit to Date,124000,USD,cumulative
+NMB-005,Mar-2026,Cumulative Benefit to Date,174700,USD,cumulative
+NMB-005,Apr-2026,Cumulative Benefit to Date,230000,USD,cumulative
+NMB-005,May-2026,Cumulative Benefit to Date,290000,USD,cumulative
+NMB-005,Jun-2026,Cumulative Benefit to Date,354700,USD,cumulative
+nmb-005 ,Jul-2026,Cumulative Benefit to Date,424000,USD,cumulative
+NMB-005,Aug-2026,Cumulative Benefit to Date,498000,USD,cumulative
+nmb-005 ,Sep-2026,Cumulative Benefit to Date,576700,USD,cumulative
+NMB-005,Oct-2026,Cumulative Benefit to Date,660000,USD,cumulative
+NMB006,May 2026,capex_one_time,120000,USD,one-time
+NMB-006,May 2026,opex_monthly,30000,USD,monthly
+nmb-006 ,June 2026,opex_monthly,30000,USD,monthly
+NMB-006,July 2026,opex_monthly,30000,USD,monthly
+NMB-006,August 2026,opex_monthly,30000,USD,monthly
+NMB006,September 2026,opex_monthly,30000,USD,monthly
+NMB-006,October 2026,opex_monthly,30000,USD,monthly
+NMB-006,May 2026,realized_benefit,33600,USD,monthly
+NMB-006,June 2026,realized_benefit,42200,USD,monthly
+NMB-006,July 2026,realized_benefit,50700,USD,monthly
+NMB-006,August 2026,realized_benefit,59300,USD,monthly
+NMB-006,September 2026,realized_benefit,67800,USD,monthly
+NMB-006,October 2026,realized_benefit,76400,USD,monthly
+NMB-007,2026-01,Build Cost,400000,USD,one-time
+NMB007,2026-01,Run Cost,"$60,000",USD,monthly
+NMB-007,2026-02,Run Cost,"60,000 ",USD,monthly
+NMB-007,2026-03,Run Cost,"$60,000",USD,monthly
+NMB-007,2026-04,Run Cost,"60,000 ",USD,monthly
+NMB-007,2026-05,Run Cost,"$60,000",USD,monthly
+NMB-007,2026-06,Run Cost,"60,000 ",USD,monthly
+nmb-007 ,2026-07,Run Cost,"$60,000",USD,monthly
+NMB-007,2026-08,Run Cost,"60,000 ",USD,monthly
+NMB-007,2026-09,Run Cost,"$60,000",USD,monthly
+NMB-007,2026-10,Run Cost,"60,000 ",USD,monthly
+NMB-007,2026-01,Realised Benefit,67200,USD,monthly
+nmb-007 ,2026-02,Realised Benefit,76700,USD,monthly
+NMB-007,2026-03,Realised Benefit,86200,USD,monthly
+NMB-007,2026-04,Realised Benefit,95700,USD,monthly
+NMB-007,2026-05,Realised Benefit,105200,USD,monthly
+NMB007,2026-06,Realised Benefit,114800,USD,monthly
+NMB-007,2026-07,Realised Benefit,124300,USD,monthly
+NMB-007,2026-08,Realised Benefit,133800,USD,monthly
+NMB-007,2026-09,Realised Benefit,143300,USD,monthly
+NMB-007,2026-10,Realised Benefit,152800,USD,monthly
+NMB-008,Mar-2026,Implementation cost,150000,EUR,one-time
+NMB-008,Mar-2026,Operating cost,42000,EUR,monthly
+NMB-008,Apr-2026,Operating cost,42000,EUR,monthly
+NMB008,May-2026,Operating cost,42000,EUR,monthly
+NMB-008,Jun-2026,Operating cost,42000,EUR,monthly
+NMB-008,Jul-2026,Operating cost,42000,EUR,monthly
+NMB-008,Aug-2026,Operating cost,42000,EUR,monthly
+NMB-008,Sep-2026,Operating cost,42000,EUR,monthly
+NMB-008,Oct-2026,Operating cost,42000,EUR,monthly
+NMB-008,Mar-2026,Benefit Realised,30600,EUR,monthly
+NMB-008,Apr-2026,Benefit Realised,36100,EUR,monthly
+NMB-008,May-2026,Benefit Realised,41700,EUR,monthly
+NMB-008,Jun-2026,Benefit Realised,47200,EUR,monthly
+NMB-008,Jul-2026,Benefit Realised,52800,EUR,monthly
+NMB-008,Aug-2026,Benefit Realised,58300,EUR,monthly
+NMB-008,Sep-2026,Benefit Realised,63900,EUR,monthly
+NMB-008,Oct-2026,Benefit Realised,69400,EUR,monthly
+NMB-009,October 2025,capex_one_time,1300,USD thousands,one-time
+NMB-009,October 2025,opex_monthly,100,USD thousands,monthly
+NMB-009,November 2025,opex_monthly,100,USD thousands,monthly
+NMB-009,December 2025,opex_monthly,100,USD thousands,monthly
+nmb-009 ,January 2026,opex_monthly,100,USD thousands,monthly
+NMB-009,February 2026,opex_monthly,100,USD thousands,monthly
+NMB-009,March 2026,opex_monthly,100,USD thousands,monthly
+NMB-009,April 2026,opex_monthly,100,USD thousands,monthly
+NMB-009,May 2026,opex_monthly,100,USD thousands,monthly
+NMB-009,June 2026,opex_monthly,100,USD thousands,monthly
+NMB-009,July 2026,opex_monthly,100,USD thousands,monthly
+NMB-009,August 2026,opex_monthly,100,USD thousands,monthly
+NMB-009,September 2026,opex_monthly,100,USD thousands,monthly
+NMB-009,October 2026,opex_monthly,100,USD thousands,monthly
+NMB-009,October 2025,realized_benefit,183,USD thousands,monthly
+NMB-009,November 2025,realized_benefit,203,USD thousands,monthly
+NMB-009,December 2025,realized_benefit,222,USD thousands,monthly
+NMB-009,January 2026,realized_benefit,242,USD thousands,monthly
+NMB-009,February 2026,realized_benefit,261,USD thousands,monthly
+NMB-009,March 2026,realized_benefit,281,USD thousands,monthly
+NMB-009,April 2026,realized_benefit,300,USD thousands,monthly
+nmb-009 ,May 2026,realized_benefit,319,USD thousands,monthly
+NMB-009,June 2026,realized_benefit,339,USD thousands,monthly
+NMB-009,July 2026,realized_benefit,358,USD thousands,monthly
+NMB-009,August 2026,realized_benefit,378,USD thousands,monthly
+NMB-009,September 2026,realized_benefit,397,USD thousands,monthly
+NMB-009,October 2026,realized_benefit,417,USD thousands,monthly
+NMB-010,2026-08,Build Cost,150000,USD,one-time
+NMB-010,2026-08,Run Cost,20000,USD,monthly
+NMB-010,2026-09,Run Cost,20000,USD,monthly
+NMB-010,2026-10,Run Cost,20000,USD,monthly
+NMB-010,2026-08,Realised Benefit,12200,USD,monthly
+NMB-010,2026-09,Realised Benefit,20000,USD,monthly
+NMB-010,2026-10,Realised Benefit,27800,USD,monthly
+NMB-010,2026-11,Forecast Benefit,30000,USD,monthly
+NMB-010,2026-12,Forecast Benefit,40000,USD,monthly
+NMB-099,2026-10,Realised Benefit,10000,USD,monthly
+NMB-099,2026-10,Run Cost,4000,USD,monthly

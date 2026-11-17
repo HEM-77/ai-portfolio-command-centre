@@ -1,6 +1,6 @@
-export type InitiativeStage = 'discovery' | 'pilot' | 'scaling' | 'production' | 'paused';
+export type InitiativeType = 'Copilot' | 'Conversational Bot' | 'Predictive Model' | 'AI-enabled Automation';
 export type InitiativeStatus = 'on_track' | 'at_risk' | 'off_track';
-export interface InitiativeMetrics { initiativeId: string; name: string; businessUnit: string; owner: string; stage: InitiativeStage; status: InitiativeStatus; spendToDate: number; valueRealised: number; roi: number | null; adoptionRate: number | null; paybackMonths: number | null; dataQualityIssueCount: number; asOf: string }
+export interface InitiativeMetrics { initiativeId: string; name: string; businessUnit: string; owner: string | null; initiativeType: InitiativeType; status: InitiativeStatus; spendToDate: number; valueRealised: number; roi: number | null; adoptionRate: number | null; paybackMonths: number | null; dataQualityIssueCount: number; asOf: string }
 export interface PortfolioSummary { asOf: string; initiativeCount: number; totalSpend: number; totalValueRealised: number; portfolioRoi: number | null; averageAdoptionRate: number | null; negativeRoiCount: number; countsByStatus: Record<InitiativeStatus, number> }
 export interface Scorecard { summary: PortfolioSummary; initiatives: InitiativeMetrics[] }
 export interface DataQualityIssue { issueId: string; sourceFile: string; row: number | null; initiativeId: string | null; field: string | null; severity: 'error' | 'warning'; action: 'rejected' | 'repaired' | 'flagged'; message: string }

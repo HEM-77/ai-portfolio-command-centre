@@ -1,0 +1,16 @@
+initiative_id,period,measure,value,unit,basis
+NMB-901,2026-01,Build Cost,"$100,000",USD,one-time
+NMB-901,Jan-2026,Run Cost,"10,000 ",USD,monthly
+nmb-901 ,February 2026,Operating cost,-10000,USD,monthly
+NMB-901,Feb-2026,Realised Benefit,25000,USD,monthly
+NMB-901,Aug-Oct 2026,realized_benefit,90000,USD,quarterly
+NMB-901,Nov 2026-Jan 2027,realized_benefit,99000,USD,quarterly
+NMB-902,2026-02,opex_monthly,5,USD thousands,monthly
+NMB-902,Feb-2026,Cumulative Benefit to Date,7000,EUR,cumulative
+NMB-902,2026-12,Forecast Benefit,9000,USD,monthly
+NMB-901,2026-01,Build Cost,"$100,000",USD,one-time
+NMB-901,Aug-Sep 2026,realized_benefit,1,USD,quarterly
+NMB-901,2026-03,Run Cost,1000,GBP,monthly
+NMB-901,2026-13,Run Cost,1000,USD,monthly
+NMB-901,2026-03,Marketing Spend,1000,USD,monthly
+NMB-901,2026-03,Run Cost,1000,USD,weekly

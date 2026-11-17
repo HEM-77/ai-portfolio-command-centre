@@ -1,7 +1,11 @@
-# Portfolio module (planned)
+# Portfolio module
 
-**Owner:** Spoorthy. **Status:** not implemented yet. This README is the specification for the TypeScript
-`PortfolioService`. Until it exists, the server uses `src/mocks/mock-portfolio-service.ts`.
+**Owner:** Spoorthy. **Status:** first implementation written by Hem (with Claude Code) on
+`feature/hem-postgres-database`, for Spoorthy to review and own. It reads the PostgreSQL tables loaded
+from `data/raw/` (see `server/db/README.md`) and is wired into `src/index.ts`: `portfolio-service.ts`
+(contract §4), `build-scorecard.ts` (business rules + data-quality issues), `calculations.ts` (formulas).
+Deviation from step 7 below: missing months of running cost are **flagged, not filled** (no invented values);
+the official data has no such gap.
 
 ## Contract
 
