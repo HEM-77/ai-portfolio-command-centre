@@ -50,15 +50,15 @@ describe("buildIndex", () => {
     const file = JSON.parse(await readFile(indexPath, "utf8")) as VectorIndexFile;
 
     expect(chunkCount).toBe(file.chunks.length);
-    expect(chunkCount).toBeGreaterThanOrEqual(10);
+    expect(chunkCount).toBe(10); // NMB-901: 4 sections; NMB-902: 2; NMB-903: 1 + 2 Scope passages + 1
     expect(file).toMatchObject({ version: 1, model: "fake/bag-of-words", dimensions: 256, chunkCount });
-    expect(new Set(file.chunks.map((c) => c.initiativeId))).toEqual(new Set(["INIT-901", "INIT-902", "INIT-903"]));
+    expect(new Set(file.chunks.map((c) => c.initiativeId))).toEqual(new Set(["NMB-901", "NMB-902", "NMB-903"]));
 
-    const status = file.chunks.find((c) => c.chunkId === "INIT-901#status-notes-1");
+    const status = file.chunks.find((c) => c.chunkId === "NMB-901#governance-and-next-steps-1");
     expect(status).toMatchObject({
-      initiativeId: "INIT-901",
-      section: "Status Notes",
-      sourceFile: "server/src/services/rag/__fixtures__/charters/INIT-901-fixture-claims-triage.md",
+      initiativeId: "NMB-901",
+      section: "Governance and Next Steps",
+      sourceFile: "server/src/services/rag/__fixtures__/charters/NMB-901_Fixture_Claims_Triage_Assistant.md",
     });
     expect(status?.text.startsWith("Claims system API integration delayed")).toBe(true); // raw text, no header
     expect(file.chunks.every((c) => c.vector.length === 256)).toBe(true);
@@ -69,21 +69,21 @@ describe("buildIndex", () => {
   it("embeds all chunks in one call, with the initiative/section header", async () => {
     await rag.buildIndex();
     expect(embedder.calls).toHaveLength(1);
-    expect(embedder.calls[0]?.[0]).toMatch(/^Fixture Claims Triage Assistant \(INIT-901\) - Objective\n\n/);
+    expect(embedder.calls[0]?.[0]).toMatch(/^Fixture Claims Triage Assistant \(NMB-901\) - Purpose and Business Case\n\n/);
   });
 
   it("skips a malformed charter instead of failing", async () => {
     const charters = join(dir, "charters");
-    const good = await readFile(join(FIXTURE_CHARTERS_DIR, "INIT-902-fixture-invoice-copilot.md"), "utf8");
+    const good = await readFile(join(FIXTURE_CHARTERS_DIR, "NMB-902_Fixture_Invoice_Processing_Copilot.md"), "utf8");
     await mkdir(charters);
-    await writeFile(join(charters, "INIT-902-fixture-invoice-copilot.md"), good);
-    await writeFile(join(charters, "INIT-950-broken.md"), "# no front matter\n\n## Risks\n\nText");
+    await writeFile(join(charters, "NMB-902_Fixture_Invoice_Processing_Copilot.md"), good);
+    await writeFile(join(charters, "NMB-950_Broken.md"), "# No Project Charter title\n\n## 5. Risks\n\nText");
     const warnings: string[] = [];
 
     const result = await service({ chartersDir: charters, logger: { warn: (m: string) => warnings.push(m) } }).buildIndex();
 
     expect(result.chunkCount).toBeGreaterThan(0);
-    expect(warnings.some((w) => w.includes("INIT-950-broken.md"))).toBe(true);
+    expect(warnings.some((w) => w.includes("NMB-950_Broken.md"))).toBe(true);
   });
 
   it("is NOT_READY without an embedder, without charters, or with an empty folder", async () => {
@@ -128,7 +128,11 @@ describe("retrieve", () => {
     const evidence = await rag.retrieve("Why was adjuster training scheduled after go-live?");
 
     expect(evidence.length).toBeGreaterThan(0);
-    expect(evidence[0]).toMatchObject({ chunkId: "INIT-901#risks-1", initiativeId: "INIT-901", section: "Risks" });
+    expect(evidence[0]).toMatchObject({
+      chunkId: "NMB-901#risks-and-dependencies-1",
+      initiativeId: "NMB-901",
+      section: "Risks and Dependencies",
+    });
     expect(Object.keys(evidence[0] ?? {}).sort()).toEqual(["chunkId", "initiativeId", "score", "section", "sourceFile", "text"]);
     expect(evidence.every((e) => e.score >= 0 && e.score <= 1)).toBe(true);
     expect(evidence.map((e) => e.score)).toEqual([...evidence.map((e) => e.score)].sort((a, b) => b - a));
@@ -141,16 +145,16 @@ describe("retrieve", () => {
 
   it("only returns evidence from the requested initiatives", async () => {
     const evidence = await rag.retrieve("Why was adjuster training scheduled after go-live?", {
-      initiativeIds: ["INIT-902"],
+      initiativeIds: ["NMB-902"],
       minScore: 0,
     });
     expect(evidence.length).toBeGreaterThan(0);
-    expect(evidence.every((e) => e.initiativeId === "INIT-902")).toBe(true);
+    expect(evidence.every((e) => e.initiativeId === "NMB-902")).toBe(true);
   });
 
   it("returns [] when nothing passes the threshold, for unknown initiatives, and for blank queries", async () => {
     expect(await rag.retrieve("quarterly weather forecast for penguins")).toEqual([]);
-    expect(await rag.retrieve("adjuster training", { initiativeIds: ["INIT-999"] })).toEqual([]);
+    expect(await rag.retrieve("adjuster training", { initiativeIds: ["NMB-999"] })).toEqual([]);
     expect(await rag.retrieve("   ")).toEqual([]);
   });
 

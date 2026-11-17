@@ -9,6 +9,9 @@ import { createRagService } from "./rag-service.js";
 export { createRagService } from "./rag-service.js";
 export type { RagServiceOptions } from "./rag-service.js";
 export { createEmbeddingClient } from "./embedding-client.js";
+/** Pure charter header parser (no embeddings, index or network), e.g. for the Delivery lead. */
+export { parseCharterMetadata } from "./charter-parser.js";
+export type { CharterMetadata } from "./charter-parser.js";
 export type { Embedder } from "./embedding-client.js";
 
 /** The embedder from config, or null when EMBEDDING_* is not fully set. */

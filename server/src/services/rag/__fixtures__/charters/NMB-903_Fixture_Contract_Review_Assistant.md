@@ -1,18 +1,17 @@
----
-initiativeId: INIT-903
-name: Fixture Contract Review Assistant
-businessUnit: Legal
----
+# Project Charter: Fixture Contract Review Assistant (NMB-903)
 
-# Fixture Contract Review Assistant
+**Initiative ID:** NMB-903
+**Initiative type:** Copilot
+**Business unit:** Legal
+**Delivery lead:** Fixture Legal Lead (Test Role)
 
 TEST FIXTURE ONLY. Not project data. The Scope section is deliberately long so ingestion has to split it on paragraph boundaries.
 
-## Objective
+## 1. Purpose and Business Case
 
 Flag unusual clauses in supplier contracts for legal review.
 
-## Scope
+## 2. Scope
 
 The assistant reviews supplier contracts written in English, including master service agreements, statements of work and non-disclosure agreements. It highlights clauses that differ from the approved legal templates, such as unlimited liability, automatic renewal without notice, unusual payment terms and jurisdiction outside approved regions. Each highlighted clause links back to the template clause it differs from, so a lawyer can compare the two quickly.
 
@@ -24,6 +23,6 @@ The pilot covers the procurement team in one region. If lawyers find the highlig
 
 Contracts are processed inside the company network. No contract text is sent to external services without approval from the data protection office.
 
-## Risks
+## 5. Risks and Dependencies
 
 Lawyers may not trust automated clause detection without seeing the reasoning behind each flag.
