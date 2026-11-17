@@ -21,6 +21,60 @@ export interface InitiativeMetrics {
   asOf: string;
 }
 
+export interface PortfolioSummary {
+  asOf: string;
+  initiativeCount: number;
+  totalSpend: number;
+  totalValueRealised: number;
+  portfolioRoi: number | null;
+  averageAdoptionRate: number | null;
+  negativeRoiCount: number;
+  countsByStatus: Record<InitiativeStatus, number>;
+}
+
+export interface Scorecard {
+  summary: PortfolioSummary;
+  initiatives: InitiativeMetrics[];
+}
+
+export type ValidationStatus = "verified" | "unverified" | "insufficient_evidence";
+
+export interface Citation {
+  citationId: string;
+  initiativeId: string;
+  sourceFile: string;
+  section: string;
+  excerpt: string;
+}
+
+export interface Narrative {
+  status: ValidationStatus | "unavailable";
+  text: string | null;
+  citations: Citation[];
+}
+
+// Body of GET /api/reports/weekly (contract §3.6).
+export interface WeeklyBrief {
+  weekEnding: string;
+  generatedAt: string;
+  summary: PortfolioSummary;
+  flags: AttentionFlag[];
+  narrative: Narrative;
+}
+
+// Only the parts of the other modules' services (contract §4) that reporting uses.
+export interface PortfolioServiceLike {
+  getScorecard(): Scorecard;
+}
+
+export interface AiServiceLike {
+  generateNarrative(input: {
+    purpose: "weekly_brief";
+    summary: PortfolioSummary;
+    flags: AttentionFlag[];
+  }): Promise<Narrative>;
+}
+
 export interface AttentionFlag {
   flagId: string;
   initiativeId: string;
