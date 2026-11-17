@@ -12,7 +12,9 @@
     "build": "tsc -p tsconfig.build.json",
     "start": "node dist/index.js",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run --passWithNoTests"
+    "test": "vitest run --passWithNoTests",
+    "ingest": "tsx src/services/rag/ingest.ts",
+    "smoke:embeddings": "tsx src/services/rag/smoke-embeddings.ts"
   },
   "dependencies": {
     "cors": "^2.8.6",
