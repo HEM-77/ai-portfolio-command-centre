@@ -1,19 +1,51 @@
 import { MAX_CHUNK_CHARS } from "./constants.js";
 
-// Turns a Markdown charter (contract §5.1) into citable chunks. Pure functions: no I/O.
+// Turns an official Nimbus charter (contract §5.2) into citable chunks. Pure functions: no I/O,
+// no logging, no embeddings. The official format, used unchanged:
+//
+//   # Project Charter: <Initiative name> (NMB-xxx)
+//
+//   **Initiative ID:** NMB-xxx
+//   **Business unit:** <business unit>
+//   **Delivery lead:** <name (role)>
+//   ...
+//
+//   ## 1. Purpose and Business Case
+//   ...
 
-export const INITIATIVE_ID_PATTERN = /^INIT-\d{3}$/;
-const REQUIRED_FIELDS = ["initiativeId", "name", "businessUnit"] as const;
+/** Canonical Nimbus initiative ID (contract §5.1). Strict: no lowercase, no missing hyphen. */
+export const INITIATIVE_ID_PATTERN = /^NMB-\d{3}$/;
+
+/** Official file name: `NMB-xxx_Name_With_Underscores.md` (contract §5.2). */
+const FILE_NAME_PATTERN = /^(NMB-\d{3})_[A-Za-z0-9_]+\.md$/;
+
+const TITLE_PATTERN = /^# Project Charter:\s*(.+?)\s*\(([^()]*)\)\s*$/;
+
+/** `**Label:** value`. The colon sits inside the bold markers in the official files. */
+const METADATA_LINE_PATTERN = /^\*\*([^*]+?):\*\*\s*(.*?)\s*$/;
+
+/** A level-two heading; `###` and deeper stay inside their section. */
+const SECTION_HEADING_PATTERN = /^##(?!#)\s+(.+?)\s*#*\s*$/;
+
+/** Only a numeric prefix like "5. " is removed, so "2026 Plan" stays "2026 Plan". */
+const SECTION_NUMBER_PREFIX = /^\d+\.\s+/;
+
+/** An HTML comment, or an unterminated one running to the end of the text (hidden when rendered too). */
+const HTML_COMMENT_PATTERN = /<!--[\s\S]*?(?:-->|$)/g;
 
 export interface CharterMetadata {
   initiativeId: string;
   name: string;
   businessUnit: string;
+  /** The "Delivery lead" line verbatim, e.g. "Daniel Okafor (Programme Lead)"; null when absent or blank. */
+  deliveryLead: string | null;
 }
 
 export interface CharterSection {
-  heading: string; // the "## " heading text, used as Evidence.section
-  text: string;
+  heading: string; // heading text without its number, used as Evidence.section
+  text: string; // section text with HTML comments removed
+  /** How many hidden HTML comments were removed from this section. The caller logs them. */
+  htmlCommentsRemoved: number;
 }
 
 export interface ParsedCharter {
@@ -21,12 +53,12 @@ export interface ParsedCharter {
   sections: CharterSection[];
 }
 
-/** One citable passage. `text` is the raw charter text, quoted in citations. */
+/** One citable passage. `text` is the charter text (minus HTML comments), quoted in citations. */
 export interface CharterChunk {
-  chunkId: string; // "INIT-003#risks-1"
+  chunkId: string; // "NMB-007#risks-and-dependencies-1"
   initiativeId: string;
   initiativeName: string;
-  sourceFile: string; // repo-relative, forward slashes: "charters/INIT-003-claims-triage.md"
+  sourceFile: string; // repo-relative, forward slashes: "charters/NMB-007_Invoice_Processing_Automation.md"
   section: string;
   text: string;
 }
@@ -39,72 +71,152 @@ export class CharterFormatError extends Error {
   }
 }
 
+/** Remove a byte-order mark and normalise Windows / old Mac line endings. */
+function normaliseText(markdown: string): string {
+  return markdown.replace(/^﻿/, "").replace(/\r\n?/g, "\n");
+}
+
 /**
- * Parse front matter and `##` sections. The `# Title` line and anything before the first `##`
- * are not evidence. `###` subheadings stay inside their `##` section.
+ * Split into the part before the first `##` heading (title + metadata) and the lines from that
+ * heading on. Headings inside an HTML comment do not count, so hidden text cannot open a section.
+ */
+function splitPreamble(text: string): { preamble: string; bodyLines: string[] } {
+  const lines = text.split("\n");
+  let inComment = false;
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i] ?? "";
+    if (!inComment && SECTION_HEADING_PATTERN.test(line)) {
+      return { preamble: lines.slice(0, i).join("\n"), bodyLines: lines.slice(i) };
+    }
+    inComment = commentStateAfter(line, inComment);
+  }
+  return { preamble: text, bodyLines: [] };
+}
+
+/** Whether we are inside an HTML comment at the end of `line`, given the state at its start. */
+function commentStateAfter(line: string, inComment: boolean): boolean {
+  let state = inComment;
+  let position = 0;
+  for (;;) {
+    const marker = state ? "-->" : "<!--";
+    const found = line.indexOf(marker, position);
+    if (found < 0) return state;
+    state = !state;
+    position = found + marker.length;
+  }
+}
+
+/**
+ * Parse only the title and `**Label:** value` metadata of an official charter (contract §5.2).
+ * Pure: safe for any module to call; it never touches embeddings, the index or the network.
  *
- * The file name must start with the initiative ID (contract §5.1), which catches a charter
- * whose front matter was copied from another file and would otherwise cite the wrong initiative.
+ * Checks that the title ID, the "Initiative ID" line and the file name all agree, which catches a
+ * charter whose header was copied from another file and would otherwise cite the wrong initiative.
+ */
+export function parseCharterMetadata(markdown: string, fileName: string): CharterMetadata {
+  const text = normaliseText(markdown);
+
+  if (/^---[ \t]*\n/.test(text)) {
+    throw new CharterFormatError(
+      `${fileName}: YAML front matter is not supported; use the official "# Project Charter: <Name> (NMB-xxx)" format`,
+    );
+  }
+
+  // Hidden comments are not metadata: a comment cannot supply or override a label.
+  const preambleLines = splitPreamble(text).preamble.replace(HTML_COMMENT_PATTERN, "").split("\n");
+  const firstLine = preambleLines.find((line) => line.trim() !== "")?.trim() ?? "";
+  const title = TITLE_PATTERN.exec(firstLine);
+  if (!title?.[1] || title[2] === undefined) {
+    throw new CharterFormatError(`${fileName}: first line must be "# Project Charter: <Name> (NMB-xxx)"`);
+  }
+  const name = title[1];
+  const titleId = title[2].trim();
+
+  const fields = new Map<string, string>();
+  for (const line of preambleLines) {
+    const match = METADATA_LINE_PATTERN.exec(line.trim());
+    if (!match?.[1]) continue;
+    const label = match[1].trim().replace(/\s+/g, " ").toLowerCase();
+    if (fields.has(label)) {
+      throw new CharterFormatError(`${fileName}: metadata label "${match[1].trim()}" appears more than once`);
+    }
+    fields.set(label, match[2] ?? "");
+  }
+
+  const initiativeId = requireField(fields, "initiative id", "Initiative ID", fileName);
+  const businessUnit = requireField(fields, "business unit", "Business unit", fileName);
+
+  if (!INITIATIVE_ID_PATTERN.test(initiativeId)) {
+    throw new CharterFormatError(`${fileName}: Initiative ID "${initiativeId}" must look like NMB-001`);
+  }
+  if (titleId !== initiativeId) {
+    throw new CharterFormatError(`${fileName}: title ID "${titleId}" does not match Initiative ID "${initiativeId}"`);
+  }
+
+  const fileMatch = FILE_NAME_PATTERN.exec(fileName);
+  if (!fileMatch) {
+    throw new CharterFormatError(`${fileName}: file name must look like "NMB-001_Initiative_Name.md"`);
+  }
+  if (fileMatch[1] !== initiativeId) {
+    throw new CharterFormatError(`${fileName}: file name must start with "${initiativeId}_"`);
+  }
+
+  const deliveryLead = fields.get("delivery lead") || null;
+  return { initiativeId, name, businessUnit, deliveryLead };
+}
+
+function requireField(fields: Map<string, string>, key: string, label: string, fileName: string): string {
+  const value = fields.get(key);
+  if (value === undefined) throw new CharterFormatError(`${fileName}: missing "**${label}:**" line`);
+  if (value === "") throw new CharterFormatError(`${fileName}: "${label}" is empty`);
+  return value;
+}
+
+/**
+ * Parse metadata and `##` sections. The title, metadata and anything else before the first `##`
+ * are not evidence. Metadata-like lines after the first `##` are ordinary section text.
  */
 export function parseCharter(markdown: string, fileName: string): ParsedCharter {
-  const text = markdown.replace(/^﻿/, "").replace(/\r\n?/g, "\n");
-
-  const frontMatter = /^---\n([\s\S]*?)\n---(?:\n|$)/.exec(text);
-  if (!frontMatter) {
-    throw new CharterFormatError(`${fileName}: missing front matter (a --- block at the top of the file)`);
-  }
-
-  const fields = parseFrontMatter(frontMatter[1] ?? "");
-  for (const field of REQUIRED_FIELDS) {
-    if (!fields[field]) throw new CharterFormatError(`${fileName}: front matter is missing "${field}"`);
-  }
-  const metadata: CharterMetadata = {
-    initiativeId: fields.initiativeId ?? "",
-    name: fields.name ?? "",
-    businessUnit: fields.businessUnit ?? "",
-  };
-
-  if (!INITIATIVE_ID_PATTERN.test(metadata.initiativeId)) {
-    throw new CharterFormatError(`${fileName}: initiativeId "${metadata.initiativeId}" must look like INIT-001`);
-  }
-  if (!fileName.startsWith(`${metadata.initiativeId}-`)) {
-    throw new CharterFormatError(`${fileName}: file name must start with "${metadata.initiativeId}-"`);
-  }
-
-  const sections = splitSections(text.slice(frontMatter[0].length));
+  const metadata = parseCharterMetadata(markdown, fileName);
+  const sections = splitSections(splitPreamble(normaliseText(markdown)).bodyLines);
   if (sections.length === 0) {
     throw new CharterFormatError(`${fileName}: no "## " sections with content`);
   }
   return { metadata, sections };
 }
 
-/** Simple `key: value` lines. Enough for our three flat fields; no YAML library needed. */
-function parseFrontMatter(block: string): Record<string, string> {
-  const fields: Record<string, string> = {};
-  for (const line of block.split("\n")) {
-    const match = /^\s*([A-Za-z][\w-]*)\s*:\s*(.*?)\s*$/.exec(line);
-    if (!match?.[1]) continue;
-    fields[match[1]] = (match[2] ?? "").replace(/^(["'])(.*)\1$/, "$2");
+function splitSections(bodyLines: readonly string[]): CharterSection[] {
+  const raw: { heading: string; lines: string[] }[] = [];
+  let inComment = false;
+
+  for (const line of bodyLines) {
+    const heading = inComment ? null : SECTION_HEADING_PATTERN.exec(line);
+    if (heading?.[1]) {
+      raw.push({ heading: heading[1].replace(SECTION_NUMBER_PREFIX, ""), lines: [] });
+    } else {
+      raw.at(-1)?.lines.push(line);
+    }
+    inComment = commentStateAfter(line, inComment);
   }
-  return fields;
+
+  return raw
+    .map(({ heading, lines }) => ({ heading, ...removeHtmlComments(lines.join("\n")) }))
+    .map(({ heading, text, removed }) => ({ heading, text: text.trim(), htmlCommentsRemoved: removed }))
+    .filter((section) => section.text.length > 0);
 }
 
-function splitSections(body: string): CharterSection[] {
-  const sections: CharterSection[] = [];
-  let current: { heading: string; lines: string[] } | null = null;
-
-  for (const line of body.split("\n")) {
-    const heading = /^##(?!#)\s+(.+?)\s*#*\s*$/.exec(line);
-    if (heading?.[1]) {
-      if (current) sections.push({ heading: current.heading, text: current.lines.join("\n").trim() });
-      current = { heading: heading[1], lines: [] };
-    } else if (current) {
-      current.lines.push(line);
-    }
-  }
-  if (current) sections.push({ heading: current.heading, text: current.lines.join("\n").trim() });
-
-  return sections.filter((section) => section.text.length > 0);
+/**
+ * Hidden HTML comments are not visible charter content and are a known prompt-injection vector,
+ * so they are never indexed or quoted. The charter file itself is not changed.
+ */
+function removeHtmlComments(text: string): { text: string; removed: number } {
+  const removed = text.match(HTML_COMMENT_PATTERN)?.length ?? 0;
+  if (removed === 0) return { text, removed };
+  const cleaned = text
+    .replace(HTML_COMMENT_PATTERN, "")
+    .replace(/[ \t]+$/gm, "") // whitespace left where an inline comment was
+    .replace(/\n{3,}/g, "\n\n"); // blank lines left where a block comment was
+  return { text: cleaned, removed };
 }
 
 /**
@@ -131,7 +243,7 @@ export function splitIntoPassages(text: string, maxChars: number = MAX_CHUNK_CHA
   return passages;
 }
 
-/** "Status Notes" -> "status-notes" */
+/** "Risks and Dependencies" -> "risks-and-dependencies" */
 export function slugify(heading: string): string {
   return (
     heading
@@ -142,7 +254,7 @@ export function slugify(heading: string): string {
 }
 
 /**
- * One chunk per passage. IDs number passages per section slug ("risks-1", "risks-2"), and keep
+ * One chunk per passage. IDs number passages per section slug ("scope-1", "scope-2"), and keep
  * counting if a heading repeats, so chunk IDs are always unique within a charter.
  */
 export function chunkCharter(

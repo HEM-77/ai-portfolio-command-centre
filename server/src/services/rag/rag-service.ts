@@ -20,7 +20,7 @@ export interface RagServiceOptions {
   embedder: Embedder | null;
   chartersDir: string;
   indexPath: string;
-  /** Source files are recorded relative to this, e.g. "charters/INIT-003-claims-triage.md". */
+  /** Source files are recorded relative to this, e.g. "charters/NMB-004_Contract_Review_Assistant.md". */
   repoRoot: string;
   defaultTopK?: number;
   defaultMinScore?: number;
@@ -62,6 +62,13 @@ export function createRagService(options: RagServiceOptions): RagService {
       const path = join(chartersDir, fileName);
       try {
         const charter = parseCharter(await readFile(path, "utf8"), fileName);
+        for (const section of charter.sections) {
+          if (section.htmlCommentsRemoved > 0) {
+            logger.warn(
+              `[rag] Removed ${section.htmlCommentsRemoved} hidden HTML comment(s) from ${charter.metadata.initiativeId} section "${section.heading}" (not indexed)`,
+            );
+          }
+        }
         chunks.push(...chunkCharter(charter, relative(repoRoot, path).split("\\").join("/")));
       } catch (error) {
         if (!(error instanceof CharterFormatError)) throw error;
