@@ -1,0 +1,100 @@
+[
+  {
+    "issue_code": "DQ-18",
+    "table": "initiatives",
+    "initiative_id": "NMB-006",
+    "description": "Reported tenure '26 weeks' replaced with 6 full months derived from go_live_date.",
+    "impact": "Monthly benefit uses date-derived tenure; confirm conflicting reported tenure with the owner."
+  },
+  {
+    "issue_code": "DQ-19",
+    "table": "initiatives",
+    "initiative_id": "NMB-007",
+    "description": "Reported tenure '12' replaced with 10 full months derived from go_live_date.",
+    "impact": "Monthly benefit uses date-derived tenure; confirm conflicting reported tenure with the owner."
+  },
+  {
+    "issue_code": "DQ-15/16",
+    "table": "initiatives",
+    "initiative_id": "NMB-008, NMB-009",
+    "description": "Converted planned benefit to USD using the workbook FX table.",
+    "impact": "All plan targets are comparable in USD."
+  },
+  {
+    "issue_code": "DQ-08",
+    "table": "weekly_usage",
+    "initiative_id": "multiple",
+    "description": "Normalized 3 initiative ID variants.",
+    "impact": "Avoids mismatches when joining usage to the initiative master."
+  },
+  {
+    "issue_code": "DQ-03",
+    "table": "weekly_usage",
+    "initiative_id": "multiple",
+    "description": "Found 2 missing usage observation(s); downstream checks determine whether each is recoverable.",
+    "impact": "Missing values are only used when a valid prior license count or non-scoring middle week allows it."
+  },
+  {
+    "issue_code": "DQ-09",
+    "table": "weekly_usage",
+    "initiative_id": "NMB-099",
+    "description": "Excluded 2 row(s) for IDs absent from initiatives.",
+    "impact": "Orphan rows cannot create scorecard entries."
+  },
+  {
+    "issue_code": "DQ-01",
+    "table": "weekly_usage",
+    "initiative_id": "multiple",
+    "description": "Removed 1 exact duplicate metric row(s).",
+    "impact": "Prevents duplicate usage observations from affecting the scorecard."
+  },
+  {
+    "issue_code": "DQ-06",
+    "table": "weekly_usage",
+    "initiative_id": "all",
+    "description": "Mapped raw usage metric aliases to canonical metric names.",
+    "impact": "Creates a consistent usage schema."
+  },
+  {
+    "issue_code": "DQ-02",
+    "table": "weekly_usage",
+    "initiative_id": "NMB-006",
+    "description": "Forward-filled missing licensed user counts from the nearest prior week.",
+    "impact": "Provides a denominator for adoption where a prior count is available."
+  },
+  {
+    "issue_code": "DQ-05",
+    "table": "weekly_usage",
+    "initiative_id": "multiple",
+    "description": "Converted weekly adoption percentages to WAU counts using licensed users.",
+    "impact": "Standardizes weekly activity to user counts."
+  },
+  {
+    "issue_code": "DQ-04",
+    "table": "weekly_usage",
+    "initiative_id": "NMB-009",
+    "description": "WAU 2800 exceeded licensed users on 2026-11-15; corrected a 10x digit slip to 280.",
+    "impact": "Keeps WAU within the licensed-user population."
+  },
+  {
+    "issue_code": "DQ-01",
+    "table": "cost_benefit",
+    "initiative_id": "multiple",
+    "description": "Removed 1 exact duplicate financial row(s).",
+    "impact": "Prevents duplicate costs or benefits from being counted twice."
+  },
+  {
+    "issue_code": "DQ-09",
+    "table": "cost_benefit",
+    "initiative_id": "NMB-099",
+    "description": "Excluded 2 row(s) for IDs absent from initiatives.",
+    "impact": "Prevents orphan financial records from entering totals."
+  },
+  {
+    "issue_code": "DQ-10",
+    "table": "cost_benefit",
+    "initiative_id": "NMB-004",
+    "description": "Corrected negative cost (-30000) in 2026-07 to its positive amount.",
+    "impact": "Prevents a malformed cost sign from understating total cost and inflating ROI."
+  }
+]

@@ -1,0 +1,142 @@
+[
+  {
+    "issue_code": "DQ-07",
+    "table": "initiatives",
+    "initiative_id": "NMB-005",
+    "description": "Parsed non-ISO go_live_date ('1 Dec 2025') to '2025-12-01'.",
+    "impact": "Standardized date format."
+  },
+  {
+    "issue_code": "DQ-18",
+    "table": "initiatives",
+    "initiative_id": "NMB-006",
+    "description": "Converted text tenure '26 weeks' to 6 full months using go_live_date (2026-05-01).",
+    "impact": "Enables monthly benefit division by 6."
+  },
+  {
+    "issue_code": "DQ-19",
+    "table": "initiatives",
+    "initiative_id": "NMB-007",
+    "description": "Reported months_live (12) conflicts with go_live_date (2026-01-01 -> 10 months). Used 10 months and flagged for client clarification.",
+    "impact": "Avg monthly benefit uses 10 months instead of 12."
+  },
+  {
+    "issue_code": "DQ-15/16",
+    "table": "initiatives",
+    "initiative_id": "NMB-008, NMB-009",
+    "description": "Converted planned_annual_benefit from EUR (x1.08) and USD thousands (x1,000) to USD.",
+    "impact": "All plan targets standardized to USD."
+  },
+  {
+    "issue_code": "DQ-08",
+    "table": "weekly_usage",
+    "initiative_id": "multiple",
+    "description": "Normalized 7 inconsistent initiative_id variants.",
+    "impact": "Prevents orphaned joins."
+  },
+  {
+    "issue_code": "DQ-09",
+    "table": "weekly_usage",
+    "initiative_id": "NMB-099",
+    "description": "Excluded 2 rows for orphan initiative(s) absent from master list.",
+    "impact": "Prevents phantom scorecard rows."
+  },
+  {
+    "issue_code": "DQ-06",
+    "table": "weekly_usage",
+    "initiative_id": "all",
+    "description": "Mapped 8 raw usage metric aliases to canonical names ('licensed_users', 'wau', 'adoption_rate_pct').",
+    "impact": "Uniform usage schema."
+  },
+  {
+    "issue_code": "DQ-01",
+    "table": "weekly_usage",
+    "initiative_id": "NMB-004",
+    "description": "Dropped 1 exact duplicate weekly usage row(s).",
+    "impact": "Prevents double counting."
+  },
+  {
+    "issue_code": "DQ-02",
+    "table": "weekly_usage",
+    "initiative_id": "NMB-006",
+    "description": "Forward-filled missing latest-week licensed_users from prior week.",
+    "impact": "Restores valid denominator for Adoption."
+  },
+  {
+    "issue_code": "DQ-05",
+    "table": "weekly_usage",
+    "initiative_id": "NMB-008",
+    "description": "Converted 'Weekly Adoption Rate' (%) into WAU headcount via (rate/100) * licensed_users.",
+    "impact": "Standardizes WAU to user count."
+  },
+  {
+    "issue_code": "DQ-04",
+    "table": "weekly_usage",
+    "initiative_id": "NMB-009",
+    "description": "WAU (2800) exceeded licensed_users (350) on 2026-11-15; corrected 10x digit slip to 280.",
+    "impact": "Corrects impossible 800% adoption to 80.0%."
+  },
+  {
+    "issue_code": "DQ-03",
+    "table": "weekly_usage",
+    "initiative_id": "NMB-007",
+    "description": "Middle-week WAU is blank; left un-imputed as WAU change uses first and latest weeks only.",
+    "impact": "Zero impact on required metrics."
+  },
+  {
+    "issue_code": "DQ-09",
+    "table": "cost_benefit",
+    "initiative_id": "NMB-099",
+    "description": "Excluded 2 rows for orphan initiative(s) absent from master list.",
+    "impact": "Prevents phantom financial entries."
+  },
+  {
+    "issue_code": "DQ-12",
+    "table": "cost_benefit",
+    "initiative_id": "NMB-007",
+    "description": "Stripped '$' symbols, commas, and spaces from 10 text-formatted cost rows.",
+    "impact": "Enables numeric summation."
+  },
+  {
+    "issue_code": "DQ-06",
+    "table": "cost_benefit",
+    "initiative_id": "all",
+    "description": "Mapped 11 raw financial measure names to canonical categories.",
+    "impact": "Uniform financial aggregation."
+  },
+  {
+    "issue_code": "DQ-17",
+    "table": "cost_benefit",
+    "initiative_id": "NMB-010",
+    "description": "Excluded 2 future 'Forecast Benefit' rows (Nov/Dec 2026) from realised benefit.",
+    "impact": "Prevents overstating realised benefit by $70,000."
+  },
+  {
+    "issue_code": "DQ-11",
+    "table": "cost_benefit",
+    "initiative_id": "NMB-002",
+    "description": "Dropped 1 exact duplicate monthly run-cost row(s).",
+    "impact": "Prevents $30,000 cost overstatement."
+  },
+  {
+    "issue_code": "DQ-10",
+    "table": "cost_benefit",
+    "initiative_id": "NMB-004",
+    "description": "Corrected negative run_cost (-30000.0) in 2026-07 to 30000.0.",
+    "impact": "Prevents cost understatement and inflated ROI."
+  },
+  {
+    "issue_code": "DQ-15/16",
+    "table": "cost_benefit",
+    "initiative_id": "NMB-008, NMB-009",
+    "description": "Converted EUR (x1.08) and USD thousands (x1,000) to exact USD.",
+    "impact": "Consistent USD baseline."
+  },
+  {
+    "issue_code": "DQ-13",
+    "table": "cost_benefit",
+    "initiative_id": "NMB-005",
+    "description": "Used latest cumulative benefit snapshot instead of summing cumulative rows.",
+    "impact": "Prevents ~6x benefit overstatement."
+  }
+]
