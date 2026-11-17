@@ -216,7 +216,9 @@ Optional query parameters (all PROPOSED):
 | `status` | `off_track` | Filter by status |
 | `businessUnit` | `Operations` | Filter by business unit |
 | `sort` | `roi` | Sort field; default `initiativeId` |
-| `order` | `asc` | `asc` or `desc` |
+| `order` | `asc` | `asc` or `desc`; default `asc` |
+
+The controller validates these and passes them to `PortfolioService.getInitiatives()`, which does the filtering and sorting (§4). `null` values sort last in both orders.
 
 ```json
 {
@@ -332,6 +334,8 @@ Optional query parameters (all PROPOSED):
 | `unverified` | The LLM answer failed a check. `answer` holds a fallback built by code from `figures` and `citations`. `notes` explain what failed. | Warning banner |
 | `insufficient_evidence` | No relevant scorecard data or charter evidence was found | "Not enough evidence to answer" message. Never a guess. |
 
+`model` is the OpenRouter model ID that drafted the answer, or `null` when no LLM was called (for example `insufficient_evidence`).
+
 `questionType` for numerical questions may come back with an empty `citations` array. Narrative questions may come back with an empty `figures` array.
 
 ### 3.6 `GET /api/reports/weekly`
@@ -381,7 +385,9 @@ export interface PortfolioService {
   getInitiatives(filter?: {
     status?: InitiativeStatus;
     businessUnit?: string;
-  }): InitiativeMetrics[];
+    sort?: keyof InitiativeMetrics;               // default "initiativeId"
+    order?: "asc" | "desc";                       // default "asc"; null values always sort last
+  }): InitiativeMetrics[];                        // filtering and sorting happen here, not in the controller
   getInitiative(initiativeId: string): InitiativeMetrics | undefined;
   getQualityReport(): DataQualityReport;
 }
@@ -391,6 +397,7 @@ export interface RagService {
   buildIndex(): Promise<{ chunkCount: number }>;  // ingestion: charters -> chunks -> embeddings -> JSON index
   loadIndex(): Promise<void>;                     // on startup
   isReady(): boolean;
+  getChunkCount(): number;                        // chunks in the loaded index; 0 when not loaded (for /api/health)
   retrieve(query: string, options?: {
     initiativeIds?: string[];                     // restrict to these initiatives
     topK?: number;                                // default 5
