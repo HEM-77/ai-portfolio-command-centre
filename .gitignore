@@ -1,0 +1,38 @@
+# Secrets — never commit
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+
+# Generated vector index (rebuilt with `npm run ingest`)
+server/storage/
+
+# Test / coverage output
+coverage/
+
+# Logs and temp files
+*.log
+npm-debug.log*
+tmp/
+temp/
+*.tmp
+
+# Editor / OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Local Claude Code settings
+.claude/settings.local.json

@@ -1,0 +1,17 @@
+flowchart LR
+  subgraph ING["Ingestion: run once, re-run when charters change"]
+    direction LR
+    MD[("Markdown charters")] --> EXT["Text extraction"]
+    EXT -->|"sections"| CHK["Chunking + metadata"]
+    CHK -->|"chunks with initiative ID, source, heading"| EMB1["Embedding provider"]
+    EMB1 -->|"vectors + metadata"| VI[("Local JSON vector index")]
+  end
+
+  subgraph RET["Retrieval: per question"]
+    direction LR
+    Q["Question text"] --> EMB2["Embed query"]
+    EMB2 -->|"query vector"| SIM["Similarity search, top-k"]
+    SIM --> EV["Source evidence + citations"]
+  end
+
+  VI -->|"stored vectors"| SIM

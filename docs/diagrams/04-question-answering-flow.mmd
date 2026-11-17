@@ -1,0 +1,17 @@
+flowchart TD
+  Q["Executive question"] --> ROUTE{"Question router"}
+
+  ROUTE -->|"Numerical"| NUM["Read scorecard values"]
+  ROUTE -->|"Narrative"| NAR["Retrieve charter evidence"]
+  ROUTE -->|"Mixed"| MIX["Read scorecard values and identify initiatives"]
+  MIX -->|"initiative IDs"| MIXR["Retrieve evidence for those initiatives"]
+
+  NUM --> PROMPT["Build grounded prompt"]
+  NAR --> PROMPT
+  MIXR --> PROMPT
+
+  PROMPT -->|"question + context"| LLM["OpenRouter LLM"]
+  LLM -->|"draft answer"| CHECK{"Validate figures and citations"}
+
+  CHECK -->|"pass"| ANS["Answer with figures and sources"]
+  CHECK -->|"fail"| FALL["Fallback: raw values and evidence, marked unverified"]

@@ -1,0 +1,13 @@
+flowchart LR
+  GEN["TypeScript data generator"] -->|"writes"| CSV[("Synthetic CSV files")]
+  CSV -->|"raw rows"| VAL["Validation"]
+  VAL -->|"valid rows"| NORM["Normalisation"]
+  NORM -->|"typed records"| CALC["Deterministic calculations"]
+  CALC -->|"ROI, spend, value, adoption"| SC["Portfolio scorecard"]
+
+  VAL -.->|"rejected / repaired rows"| DQ[("Data-quality log")]
+  NORM -.->|"normalisation notes"| DQ
+
+  SC --> DASH["Portfolio Overview dashboard"]
+  SC --> REP["Reporting module"]
+  SC --> AI["AI module: numerical answers"]

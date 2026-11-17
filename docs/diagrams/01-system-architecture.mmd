@@ -1,0 +1,40 @@
+flowchart LR
+  subgraph FE["React + TypeScript frontend"]
+    direction TB
+    UI1["Portfolio Overview"]
+    UI2["Portfolio Intelligence Assistant"]
+    UI3["Weekly Executive Brief"]
+  end
+
+  API["Express API (Node.js + TypeScript)"]
+
+  subgraph BE["Backend modular monolith"]
+    direction TB
+    AI["AI module"]
+    PM["Portfolio module"]
+    RAG["RAG module"]
+    REP["Reporting module"]
+  end
+
+  CSV[("Synthetic CSV data")]
+  MD[("Markdown initiative charters")]
+  VI[("Local JSON vector index")]
+  EMB["Embedding provider"]
+  LLM["OpenRouter LLM"]
+
+  FE -->|"REST / JSON"| API
+  API --> AI
+  API --> PM
+  API --> REP
+
+  CSV -->|"load + validate"| PM
+  MD -->|"ingest"| RAG
+  RAG -->|"text chunks"| EMB
+  RAG -->|"store / search vectors"| VI
+
+  AI -->|"scorecard values"| PM
+  AI -->|"evidence request"| RAG
+  AI -->|"grounded prompt"| LLM
+
+  REP -->|"scorecard + flags"| PM
+  REP -->|"brief narrative"| AI

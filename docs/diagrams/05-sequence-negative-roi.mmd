@@ -1,0 +1,27 @@
+sequenceDiagram
+  actor Exec as Executive
+  participant UI as Assistant screen
+  participant API as Express API
+  participant AI as AI module
+  participant PM as Portfolio module
+  participant RAG as RAG module
+  participant EMB as Embedding provider
+  participant LLM as OpenRouter
+
+  Exec->>UI: Which initiatives have negative ROI, and why?
+  UI->>API: Ask question
+  API->>AI: Question
+  AI->>AI: Classify as mixed question
+  AI->>PM: Initiatives with ROI below zero
+  PM-->>AI: Initiative IDs and ROI values
+  AI->>RAG: Find reasons for these initiatives
+  RAG->>EMB: Embed query
+  EMB-->>RAG: Query vector
+  RAG->>RAG: Similarity search filtered by initiative ID
+  RAG-->>AI: Top charter chunks with citations
+  AI->>LLM: Grounded prompt with values and evidence
+  LLM-->>AI: Draft answer
+  AI->>AI: Check figures match scorecard and citations exist
+  AI-->>API: Answer, figures, citations
+  API-->>UI: JSON response
+  UI-->>Exec: Answer with ROI table and linked sources
