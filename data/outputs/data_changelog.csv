@@ -1,0 +1,21 @@
+issue_code,table,initiative_id,description,impact
+DQ-07,initiatives,NMB-005,Parsed non-ISO go_live_date ('1 Dec 2025') to '2025-12-01'.,Standardized date format.
+DQ-18,initiatives,NMB-006,Converted text tenure '26 weeks' to 6 full months using go_live_date (2026-05-01).,Enables monthly benefit division by 6.
+DQ-19,initiatives,NMB-007,Reported months_live (12) conflicts with go_live_date (2026-01-01 -> 10 months). Used 10 months and flagged for client clarification.,Avg monthly benefit uses 10 months instead of 12.
+DQ-15/16,initiatives,"NMB-008, NMB-009","Converted planned_annual_benefit from EUR (x1.08) and USD thousands (x1,000) to USD.",All plan targets standardized to USD.
+DQ-08,weekly_usage,multiple,Normalized 7 inconsistent initiative_id variants.,Prevents orphaned joins.
+DQ-09,weekly_usage,NMB-099,Excluded 2 rows for orphan initiative(s) absent from master list.,Prevents phantom scorecard rows.
+DQ-06,weekly_usage,all,"Mapped 8 raw usage metric aliases to canonical names ('licensed_users', 'wau', 'adoption_rate_pct').",Uniform usage schema.
+DQ-01,weekly_usage,NMB-004,Dropped 1 exact duplicate weekly usage row(s).,Prevents double counting.
+DQ-02,weekly_usage,NMB-006,Forward-filled missing latest-week licensed_users from prior week.,Restores valid denominator for Adoption.
+DQ-05,weekly_usage,NMB-008,Converted 'Weekly Adoption Rate' (%) into WAU headcount via (rate/100) * licensed_users.,Standardizes WAU to user count.
+DQ-04,weekly_usage,NMB-009,WAU (2800) exceeded licensed_users (350) on 2026-11-15; corrected 10x digit slip to 280.,Corrects impossible 800% adoption to 80.0%.
+DQ-03,weekly_usage,NMB-007,Middle-week WAU is blank; left un-imputed as WAU change uses first and latest weeks only.,Zero impact on required metrics.
+DQ-09,cost_benefit,NMB-099,Excluded 2 rows for orphan initiative(s) absent from master list.,Prevents phantom financial entries.
+DQ-12,cost_benefit,NMB-007,"Stripped '$' symbols, commas, and spaces from 10 text-formatted cost rows.",Enables numeric summation.
+DQ-06,cost_benefit,all,Mapped 11 raw financial measure names to canonical categories.,Uniform financial aggregation.
+DQ-17,cost_benefit,NMB-010,Excluded 2 future 'Forecast Benefit' rows (Nov/Dec 2026) from realised benefit.,"Prevents overstating realised benefit by $70,000."
+DQ-11,cost_benefit,NMB-002,Dropped 1 exact duplicate monthly run-cost row(s).,"Prevents $30,000 cost overstatement."
+DQ-10,cost_benefit,NMB-004,Corrected negative run_cost (-30000.0) in 2026-07 to 30000.0.,Prevents cost understatement and inflated ROI.
+DQ-15/16,cost_benefit,"NMB-008, NMB-009","Converted EUR (x1.08) and USD thousands (x1,000) to exact USD.",Consistent USD baseline.
+DQ-13,cost_benefit,NMB-005,Used latest cumulative benefit snapshot instead of summing cumulative rows.,Prevents ~6x benefit overstatement.

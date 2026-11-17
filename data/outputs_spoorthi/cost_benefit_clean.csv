@@ -1,0 +1,189 @@
+initiative_id,period,measure,value,unit,basis,canonical_measure,period_norm,value_clean,value_usd,imputed
+NMB-001,2025-11,Build Cost,300000,USD,one-time,cost,2025-11,300000,300000.0,False
+NMB-001,2025-11,Run Cost,40000,USD,monthly,cost,2025-11,40000,40000.0,False
+NMB-001,2025-12,Run Cost,40000,USD,monthly,cost,2025-12,40000,40000.0,False
+NMB-001,2026-01,Run Cost,40000,USD,monthly,cost,2026-01,40000,40000.0,False
+NMB-001,2026-02,Run Cost,40000,USD,monthly,cost,2026-02,40000,40000.0,False
+NMB-001,2026-03,Run Cost,40000,USD,monthly,cost,2026-03,40000,40000.0,False
+NMB-001,2026-04,Run Cost,40000,USD,monthly,cost,2026-04,40000,40000.0,False
+NMB-001,2026-05,Run Cost,40000,USD,monthly,cost,2026-05,40000,40000.0,False
+NMB-001,2026-06,Run Cost,40000,USD,monthly,cost,2026-06,40000,40000.0,False
+NMB-001,2026-07,Run Cost,40000,USD,monthly,cost,2026-07,40000,40000.0,False
+NMB-001,2026-08,Run Cost,40000,USD,monthly,cost,2026-08,40000,40000.0,False
+NMB-001,2026-09,Run Cost,40000,USD,monthly,cost,2026-09,40000,40000.0,False
+NMB-001,2026-10,Run Cost,40000,USD,monthly,cost,2026-10,40000,40000.0,False
+NMB-001,2025-11,Realised Benefit,114600,USD,monthly,realised_benefit,2025-11,114600,114600.0,False
+NMB-001,2025-12,Realised Benefit,127800,USD,monthly,realised_benefit,2025-12,127800,127800.0,False
+NMB-001,2026-01,Realised Benefit,141100,USD,monthly,realised_benefit,2026-01,141100,141100.0,False
+NMB-001,2026-02,Realised Benefit,154400,USD,monthly,realised_benefit,2026-02,154400,154400.0,False
+NMB-001,2026-03,Realised Benefit,167600,USD,monthly,realised_benefit,2026-03,167600,167600.0,False
+NMB-001,2026-04,Realised Benefit,180900,USD,monthly,realised_benefit,2026-04,180900,180900.0,False
+NMB-001,2026-05,Realised Benefit,194100,USD,monthly,realised_benefit,2026-05,194100,194100.0,False
+NMB-001,2026-06,Realised Benefit,207400,USD,monthly,realised_benefit,2026-06,207400,207400.0,False
+NMB-001,2026-07,Realised Benefit,220600,USD,monthly,realised_benefit,2026-07,220600,220600.0,False
+NMB-001,2026-08,Realised Benefit,233900,USD,monthly,realised_benefit,2026-08,233900,233900.0,False
+NMB-001,2026-09,Realised Benefit,247200,USD,monthly,realised_benefit,2026-09,247200,247200.0,False
+NMB-001,2026-10,Realised Benefit,260400,USD,monthly,realised_benefit,2026-10,260400,260400.0,False
+NMB-002,Feb-2026,Implementation cost,90000,USD,one-time,cost,2026-02,90000,90000.0,False
+NMB-002,Feb-2026,Operating cost,30000,USD,monthly,cost,2026-02,30000,30000.0,False
+NMB-002,Mar-2026,Operating cost,30000,USD,monthly,cost,2026-03,30000,30000.0,False
+NMB-002,Apr-2026,Operating cost,30000,USD,monthly,cost,2026-04,30000,30000.0,False
+NMB-002,May-2026,Operating cost,30000,USD,monthly,cost,2026-05,30000,30000.0,False
+NMB-002,Jun-2026,Operating cost,30000,USD,monthly,cost,2026-06,30000,30000.0,False
+NMB-002,Jul-2026,Operating cost,30000,USD,monthly,cost,2026-07,30000,30000.0,False
+NMB-002,Aug-2026,Operating cost,30000,USD,monthly,cost,2026-08,30000,30000.0,False
+NMB-002,Sep-2026,Operating cost,30000,USD,monthly,cost,2026-09,30000,30000.0,False
+NMB-002,Oct-2026,Operating cost,30000,USD,monthly,cost,2026-10,30000,30000.0,False
+NMB-002,Feb-2026,Benefit Realised,36700,USD,monthly,realised_benefit,2026-02,36700,36700.0,False
+NMB-002,Mar-2026,Benefit Realised,42500,USD,monthly,realised_benefit,2026-03,42500,42500.0,False
+NMB-002,Apr-2026,Benefit Realised,48300,USD,monthly,realised_benefit,2026-04,48300,48300.0,False
+NMB-002,May-2026,Benefit Realised,54200,USD,monthly,realised_benefit,2026-05,54200,54200.0,False
+NMB-002,Jun-2026,Benefit Realised,60000,USD,monthly,realised_benefit,2026-06,60000,60000.0,False
+NMB-002,Jul-2026,Benefit Realised,65800,USD,monthly,realised_benefit,2026-07,65800,65800.0,False
+NMB-002,Aug-2026,Benefit Realised,71700,USD,monthly,realised_benefit,2026-08,71700,71700.0,False
+NMB-002,Sep-2026,Benefit Realised,77500,USD,monthly,realised_benefit,2026-09,77500,77500.0,False
+NMB-002,Oct-2026,Benefit Realised,83300,USD,monthly,realised_benefit,2026-10,83300,83300.0,False
+NMB-003,August 2025,capex_one_time,600000,USD,one-time,cost,2025-08,600000,600000.0,False
+NMB-003,August 2025,opex_monthly,100000,USD,monthly,cost,2025-08,100000,100000.0,False
+NMB-003,September 2025,opex_monthly,100000,USD,monthly,cost,2025-09,100000,100000.0,False
+NMB-003,October 2025,opex_monthly,100000,USD,monthly,cost,2025-10,100000,100000.0,False
+NMB-003,November 2025,opex_monthly,100000,USD,monthly,cost,2025-11,100000,100000.0,False
+NMB-003,December 2025,opex_monthly,100000,USD,monthly,cost,2025-12,100000,100000.0,False
+NMB-003,January 2026,opex_monthly,100000,USD,monthly,cost,2026-01,100000,100000.0,False
+NMB-003,February 2026,opex_monthly,100000,USD,monthly,cost,2026-02,100000,100000.0,False
+NMB-003,March 2026,opex_monthly,100000,USD,monthly,cost,2026-03,100000,100000.0,False
+NMB-003,April 2026,opex_monthly,100000,USD,monthly,cost,2026-04,100000,100000.0,False
+NMB-003,May 2026,opex_monthly,100000,USD,monthly,cost,2026-05,100000,100000.0,False
+NMB-003,June 2026,opex_monthly,100000,USD,monthly,cost,2026-06,100000,100000.0,False
+NMB-003,July 2026,opex_monthly,100000,USD,monthly,cost,2026-07,100000,100000.0,False
+NMB-003,August 2026,opex_monthly,100000,USD,monthly,cost,2026-08,100000,100000.0,False
+NMB-003,September 2026,opex_monthly,100000,USD,monthly,cost,2026-09,100000,100000.0,False
+NMB-003,October 2026,opex_monthly,100000,USD,monthly,cost,2026-10,100000,100000.0,False
+NMB-003,Aug-Oct 2025,realized_benefit,399900,USD,quarterly,realised_benefit,2025-10,399900,399900.0,False
+NMB-003,Nov 2025-Jan 2026,realized_benefit,500100,USD,quarterly,realised_benefit,2026-01,500100,500100.0,False
+NMB-003,Feb-Apr 2026,realized_benefit,600000,USD,quarterly,realised_benefit,2026-04,600000,600000.0,False
+NMB-003,May-Jul 2026,realized_benefit,699900,USD,quarterly,realised_benefit,2026-07,699900,699900.0,False
+NMB-003,Aug-Oct 2026,realized_benefit,800100,USD,quarterly,realised_benefit,2026-10,800100,800100.0,False
+NMB-004,2026-04,Build Cost,140000,USD,one-time,cost,2026-04,140000,140000.0,False
+NMB-004,2026-04,Run Cost,30000,USD,monthly,cost,2026-04,30000,30000.0,False
+NMB-004,2026-05,Run Cost,30000,USD,monthly,cost,2026-05,30000,30000.0,False
+NMB-004,2026-06,Run Cost,30000,USD,monthly,cost,2026-06,30000,30000.0,False
+NMB-004,2026-07,Run Cost,-30000,USD,monthly,cost,2026-07,30000,30000.0,False
+NMB-004,2026-08,Run Cost,30000,USD,monthly,cost,2026-08,30000,30000.0,False
+NMB-004,2026-09,Run Cost,30000,USD,monthly,cost,2026-09,30000,30000.0,False
+NMB-004,2026-10,Run Cost,30000,USD,monthly,cost,2026-10,30000,30000.0,False
+NMB-004,2026-04,Realised Benefit,36700,USD,monthly,realised_benefit,2026-04,36700,36700.0,False
+NMB-004,2026-05,Realised Benefit,44400,USD,monthly,realised_benefit,2026-05,44400,44400.0,False
+NMB-004,2026-06,Realised Benefit,52200,USD,monthly,realised_benefit,2026-06,52200,52200.0,False
+NMB-004,2026-07,Realised Benefit,60000,USD,monthly,realised_benefit,2026-07,60000,60000.0,False
+NMB-004,2026-08,Realised Benefit,67800,USD,monthly,realised_benefit,2026-08,67800,67800.0,False
+NMB-004,2026-09,Realised Benefit,75600,USD,monthly,realised_benefit,2026-09,75600,75600.0,False
+NMB-004,2026-10,Realised Benefit,83300,USD,monthly,realised_benefit,2026-10,83300,83300.0,False
+NMB-005,Dec-2025,Implementation cost,220000,USD,one-time,cost,2025-12,220000,220000.0,False
+NMB-005,Dec-2025,Operating cost,40000,USD,monthly,cost,2025-12,40000,40000.0,False
+NMB-005,Jan-2026,Operating cost,40000,USD,monthly,cost,2026-01,40000,40000.0,False
+NMB-005,Feb-2026,Operating cost,40000,USD,monthly,cost,2026-02,40000,40000.0,False
+NMB-005,Mar-2026,Operating cost,40000,USD,monthly,cost,2026-03,40000,40000.0,False
+NMB-005,Apr-2026,Operating cost,40000,USD,monthly,cost,2026-04,40000,40000.0,False
+NMB-005,May-2026,Operating cost,40000,USD,monthly,cost,2026-05,40000,40000.0,False
+NMB-005,Jun-2026,Operating cost,40000,USD,monthly,cost,2026-06,40000,40000.0,False
+NMB-005,Jul-2026,Operating cost,40000,USD,monthly,cost,2026-07,40000,40000.0,False
+NMB-005,Aug-2026,Operating cost,40000,USD,monthly,cost,2026-08,40000,40000.0,False
+NMB-005,Sep-2026,Operating cost,40000,USD,monthly,cost,2026-09,40000,40000.0,False
+NMB-005,Oct-2026,Operating cost,40000,USD,monthly,cost,2026-10,40000,40000.0,False
+NMB-005,Dec-2025,Cumulative Benefit to Date,36700,USD,cumulative,cumulative_benefit,2025-12,36700,36700.0,False
+NMB-005,Jan-2026,Cumulative Benefit to Date,78000,USD,cumulative,cumulative_benefit,2026-01,78000,78000.0,False
+NMB-005,Feb-2026,Cumulative Benefit to Date,124000,USD,cumulative,cumulative_benefit,2026-02,124000,124000.0,False
+NMB-005,Mar-2026,Cumulative Benefit to Date,174700,USD,cumulative,cumulative_benefit,2026-03,174700,174700.0,False
+NMB-005,Apr-2026,Cumulative Benefit to Date,230000,USD,cumulative,cumulative_benefit,2026-04,230000,230000.0,False
+NMB-005,May-2026,Cumulative Benefit to Date,290000,USD,cumulative,cumulative_benefit,2026-05,290000,290000.0,False
+NMB-005,Jun-2026,Cumulative Benefit to Date,354700,USD,cumulative,cumulative_benefit,2026-06,354700,354700.0,False
+NMB-005,Jul-2026,Cumulative Benefit to Date,424000,USD,cumulative,cumulative_benefit,2026-07,424000,424000.0,False
+NMB-005,Aug-2026,Cumulative Benefit to Date,498000,USD,cumulative,cumulative_benefit,2026-08,498000,498000.0,False
+NMB-005,Sep-2026,Cumulative Benefit to Date,576700,USD,cumulative,cumulative_benefit,2026-09,576700,576700.0,False
+NMB-005,Oct-2026,Cumulative Benefit to Date,660000,USD,cumulative,cumulative_benefit,2026-10,660000,660000.0,False
+NMB-006,May 2026,capex_one_time,120000,USD,one-time,cost,2026-05,120000,120000.0,False
+NMB-006,May 2026,opex_monthly,30000,USD,monthly,cost,2026-05,30000,30000.0,False
+NMB-006,June 2026,opex_monthly,30000,USD,monthly,cost,2026-06,30000,30000.0,False
+NMB-006,July 2026,opex_monthly,30000,USD,monthly,cost,2026-07,30000,30000.0,False
+NMB-006,August 2026,opex_monthly,30000,USD,monthly,cost,2026-08,30000,30000.0,False
+NMB-006,September 2026,opex_monthly,30000,USD,monthly,cost,2026-09,30000,30000.0,False
+NMB-006,October 2026,opex_monthly,30000,USD,monthly,cost,2026-10,30000,30000.0,False
+NMB-006,May 2026,realized_benefit,33600,USD,monthly,realised_benefit,2026-05,33600,33600.0,False
+NMB-006,June 2026,realized_benefit,42200,USD,monthly,realised_benefit,2026-06,42200,42200.0,False
+NMB-006,July 2026,realized_benefit,50700,USD,monthly,realised_benefit,2026-07,50700,50700.0,False
+NMB-006,August 2026,realized_benefit,59300,USD,monthly,realised_benefit,2026-08,59300,59300.0,False
+NMB-006,September 2026,realized_benefit,67800,USD,monthly,realised_benefit,2026-09,67800,67800.0,False
+NMB-006,October 2026,realized_benefit,76400,USD,monthly,realised_benefit,2026-10,76400,76400.0,False
+NMB-007,2026-01,Build Cost,400000,USD,one-time,cost,2026-01,400000,400000.0,False
+NMB-007,2026-01,Run Cost,"$60,000",USD,monthly,cost,2026-01,60000,60000.0,False
+NMB-007,2026-02,Run Cost,"60,000 ",USD,monthly,cost,2026-02,60000,60000.0,False
+NMB-007,2026-03,Run Cost,"$60,000",USD,monthly,cost,2026-03,60000,60000.0,False
+NMB-007,2026-04,Run Cost,"60,000 ",USD,monthly,cost,2026-04,60000,60000.0,False
+NMB-007,2026-05,Run Cost,"$60,000",USD,monthly,cost,2026-05,60000,60000.0,False
+NMB-007,2026-06,Run Cost,"60,000 ",USD,monthly,cost,2026-06,60000,60000.0,False
+NMB-007,2026-07,Run Cost,"$60,000",USD,monthly,cost,2026-07,60000,60000.0,False
+NMB-007,2026-08,Run Cost,"60,000 ",USD,monthly,cost,2026-08,60000,60000.0,False
+NMB-007,2026-09,Run Cost,"$60,000",USD,monthly,cost,2026-09,60000,60000.0,False
+NMB-007,2026-10,Run Cost,"60,000 ",USD,monthly,cost,2026-10,60000,60000.0,False
+NMB-007,2026-01,Realised Benefit,67200,USD,monthly,realised_benefit,2026-01,67200,67200.0,False
+NMB-007,2026-02,Realised Benefit,76700,USD,monthly,realised_benefit,2026-02,76700,76700.0,False
+NMB-007,2026-03,Realised Benefit,86200,USD,monthly,realised_benefit,2026-03,86200,86200.0,False
+NMB-007,2026-04,Realised Benefit,95700,USD,monthly,realised_benefit,2026-04,95700,95700.0,False
+NMB-007,2026-05,Realised Benefit,105200,USD,monthly,realised_benefit,2026-05,105200,105200.0,False
+NMB-007,2026-06,Realised Benefit,114800,USD,monthly,realised_benefit,2026-06,114800,114800.0,False
+NMB-007,2026-07,Realised Benefit,124300,USD,monthly,realised_benefit,2026-07,124300,124300.0,False
+NMB-007,2026-08,Realised Benefit,133800,USD,monthly,realised_benefit,2026-08,133800,133800.0,False
+NMB-007,2026-09,Realised Benefit,143300,USD,monthly,realised_benefit,2026-09,143300,143300.0,False
+NMB-007,2026-10,Realised Benefit,152800,USD,monthly,realised_benefit,2026-10,152800,152800.0,False
+NMB-008,Mar-2026,Implementation cost,150000,EUR,one-time,cost,2026-03,150000,162000.0,False
+NMB-008,Mar-2026,Operating cost,42000,EUR,monthly,cost,2026-03,42000,45360.0,False
+NMB-008,Apr-2026,Operating cost,42000,EUR,monthly,cost,2026-04,42000,45360.0,False
+NMB-008,May-2026,Operating cost,42000,EUR,monthly,cost,2026-05,42000,45360.0,False
+NMB-008,Jun-2026,Operating cost,42000,EUR,monthly,cost,2026-06,42000,45360.0,False
+NMB-008,Jul-2026,Operating cost,42000,EUR,monthly,cost,2026-07,42000,45360.0,False
+NMB-008,Aug-2026,Operating cost,42000,EUR,monthly,cost,2026-08,42000,45360.0,False
+NMB-008,Sep-2026,Operating cost,42000,EUR,monthly,cost,2026-09,42000,45360.0,False
+NMB-008,Oct-2026,Operating cost,42000,EUR,monthly,cost,2026-10,42000,45360.0,False
+NMB-008,Mar-2026,Benefit Realised,30600,EUR,monthly,realised_benefit,2026-03,30600,33048.0,False
+NMB-008,Apr-2026,Benefit Realised,36100,EUR,monthly,realised_benefit,2026-04,36100,38988.0,False
+NMB-008,May-2026,Benefit Realised,41700,EUR,monthly,realised_benefit,2026-05,41700,45036.0,False
+NMB-008,Jun-2026,Benefit Realised,47200,EUR,monthly,realised_benefit,2026-06,47200,50976.0,False
+NMB-008,Jul-2026,Benefit Realised,52800,EUR,monthly,realised_benefit,2026-07,52800,57024.00000000001,False
+NMB-008,Aug-2026,Benefit Realised,58300,EUR,monthly,realised_benefit,2026-08,58300,62964.00000000001,False
+NMB-008,Sep-2026,Benefit Realised,63900,EUR,monthly,realised_benefit,2026-09,63900,69012.0,False
+NMB-008,Oct-2026,Benefit Realised,69400,EUR,monthly,realised_benefit,2026-10,69400,74952.0,False
+NMB-009,October 2025,capex_one_time,1300,USD thousands,one-time,cost,2025-10,1300,1300000.0,False
+NMB-009,October 2025,opex_monthly,100,USD thousands,monthly,cost,2025-10,100,100000.0,False
+NMB-009,November 2025,opex_monthly,100,USD thousands,monthly,cost,2025-11,100,100000.0,False
+NMB-009,December 2025,opex_monthly,100,USD thousands,monthly,cost,2025-12,100,100000.0,False
+NMB-009,January 2026,opex_monthly,100,USD thousands,monthly,cost,2026-01,100,100000.0,False
+NMB-009,February 2026,opex_monthly,100,USD thousands,monthly,cost,2026-02,100,100000.0,False
+NMB-009,March 2026,opex_monthly,100,USD thousands,monthly,cost,2026-03,100,100000.0,False
+NMB-009,April 2026,opex_monthly,100,USD thousands,monthly,cost,2026-04,100,100000.0,False
+NMB-009,May 2026,opex_monthly,100,USD thousands,monthly,cost,2026-05,100,100000.0,False
+NMB-009,June 2026,opex_monthly,100,USD thousands,monthly,cost,2026-06,100,100000.0,False
+NMB-009,July 2026,opex_monthly,100,USD thousands,monthly,cost,2026-07,100,100000.0,False
+NMB-009,August 2026,opex_monthly,100,USD thousands,monthly,cost,2026-08,100,100000.0,False
+NMB-009,September 2026,opex_monthly,100,USD thousands,monthly,cost,2026-09,100,100000.0,False
+NMB-009,October 2026,opex_monthly,100,USD thousands,monthly,cost,2026-10,100,100000.0,False
+NMB-009,October 2025,realized_benefit,183,USD thousands,monthly,realised_benefit,2025-10,183,183000.0,False
+NMB-009,November 2025,realized_benefit,203,USD thousands,monthly,realised_benefit,2025-11,203,203000.0,False
+NMB-009,December 2025,realized_benefit,222,USD thousands,monthly,realised_benefit,2025-12,222,222000.0,False
+NMB-009,January 2026,realized_benefit,242,USD thousands,monthly,realised_benefit,2026-01,242,242000.0,False
+NMB-009,February 2026,realized_benefit,261,USD thousands,monthly,realised_benefit,2026-02,261,261000.0,False
+NMB-009,March 2026,realized_benefit,281,USD thousands,monthly,realised_benefit,2026-03,281,281000.0,False
+NMB-009,April 2026,realized_benefit,300,USD thousands,monthly,realised_benefit,2026-04,300,300000.0,False
+NMB-009,May 2026,realized_benefit,319,USD thousands,monthly,realised_benefit,2026-05,319,319000.0,False
+NMB-009,June 2026,realized_benefit,339,USD thousands,monthly,realised_benefit,2026-06,339,339000.0,False
+NMB-009,July 2026,realized_benefit,358,USD thousands,monthly,realised_benefit,2026-07,358,358000.0,False
+NMB-009,August 2026,realized_benefit,378,USD thousands,monthly,realised_benefit,2026-08,378,378000.0,False
+NMB-009,September 2026,realized_benefit,397,USD thousands,monthly,realised_benefit,2026-09,397,397000.0,False
+NMB-009,October 2026,realized_benefit,417,USD thousands,monthly,realised_benefit,2026-10,417,417000.0,False
+NMB-010,2026-08,Build Cost,150000,USD,one-time,cost,2026-08,150000,150000.0,False
+NMB-010,2026-08,Run Cost,20000,USD,monthly,cost,2026-08,20000,20000.0,False
+NMB-010,2026-09,Run Cost,20000,USD,monthly,cost,2026-09,20000,20000.0,False
+NMB-010,2026-10,Run Cost,20000,USD,monthly,cost,2026-10,20000,20000.0,False
+NMB-010,2026-08,Realised Benefit,12200,USD,monthly,realised_benefit,2026-08,12200,12200.0,False
+NMB-010,2026-09,Realised Benefit,20000,USD,monthly,realised_benefit,2026-09,20000,20000.0,False
+NMB-010,2026-10,Realised Benefit,27800,USD,monthly,realised_benefit,2026-10,27800,27800.0,False
